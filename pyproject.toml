@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "certmesh"
+version = "0.1.0"
+description = "Multi-agent enterprise learning / certification-management system on the Microsoft Agent Framework + Microsoft Foundry"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "CertMesh contributors" }]
+keywords = ["multi-agent", "microsoft-foundry", "agent-framework", "foundry-iq", "rag", "learning"]
+
+# Core runtime deps are intentionally minimal so the system runs fully offline
+# (deterministic agents + local vector index + public MCP over HTTP). The heavy
+# Azure SDKs are optional extras that light up the real Foundry paths.
+dependencies = [
+    "pydantic>=2.6,<3.0",
+    "fastapi>=0.110,<1.0",
+    "uvicorn[standard]>=0.27,<1.0",
+    "httpx>=0.27,<1.0",
+    "jinja2>=3.1,<4.0",
+    "python-multipart>=0.0.9,<1.0",
+]
+
+[project.optional-dependencies]
+# Real Microsoft Foundry + Agent Framework + Foundry IQ (Azure AI Search) paths.
+azure = [
+    "agent-framework>=1.0.0",
+    "azure-identity>=1.16",
+    "azure-ai-projects>=2.0.0",
+    "azure-search-documents>=11.5.0",
+    "azure-ai-evaluation>=1.0.0",
+    "mcp>=1.2.0",
+    "opentelemetry-sdk>=1.24",
+    "azure-monitor-opentelemetry>=1.4",
+]
+# Optional language detection fallback for non en/ca/es input.
+i18n = ["langdetect>=1.0.9"]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.5",
+    "httpx>=0.27",
+]
+
+[project.scripts]
+certmesh-evals = "evals.run_evals:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+certmesh = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]
+asyncio_mode = "auto"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+src = ["src", "app", "evals", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501", "B008"]

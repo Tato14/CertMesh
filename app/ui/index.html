@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CertMesh — multi-agent certification enablement</title>
+<style>
+  :root{
+    --bg:#0f1420; --panel:#171e2e; --panel2:#1e2740; --ink:#e7ecf5; --muted:#9aa7bd;
+    --line:#2a3550; --accent:#4ea1ff; --good:#36c39a; --warn:#f4b740; --bad:#f06a6a;
+    --chip:#23304d;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:14px/1.5 system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink)}
+  header{padding:18px 24px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#16203a,#0f1420)}
+  h1{margin:0;font-size:20px;letter-spacing:.2px}
+  h1 span{color:var(--accent)}
+  .sub{color:var(--muted);font-size:12.5px;margin-top:3px}
+  .disclosure{margin:10px 24px 0;padding:8px 12px;background:#1b2742;border:1px solid var(--line);border-radius:8px;color:#bcd2f5;font-size:12px}
+  main{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;padding:18px 24px;max-width:1320px}
+  @media(max-width:1000px){main{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:16px}
+  .card h2{margin:0 0 10px;font-size:14px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+  label{display:block;font-size:12px;color:var(--muted);margin:8px 0 3px}
+  input,select,textarea{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:8px 10px;font:inherit}
+  textarea{resize:vertical;min-height:54px}
+  .row{display:flex;gap:10px}.row>div{flex:1}
+  button{cursor:pointer;border:1px solid var(--line);background:var(--accent);color:#06203f;font-weight:650;border-radius:8px;padding:9px 14px}
+  button.secondary{background:var(--chip);color:var(--ink);font-weight:500}
+  .presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+  .presets button{font-size:12px;padding:6px 10px;background:var(--chip);color:var(--ink);font-weight:500}
+  .presets button:hover{border-color:var(--accent)}
+  .badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:650;border:1px solid var(--line)}
+  .ready{background:rgba(54,195,154,.15);color:var(--good);border-color:#2c6a59}
+  .borderline{background:rgba(244,183,64,.15);color:var(--warn);border-color:#7a6326}
+  .not_ready{background:rgba(240,106,106,.15);color:var(--bad);border-color:#7c3a3a}
+  .fit{background:rgba(54,195,154,.15);color:var(--good);border-color:#2c6a59}
+  .nofit{background:rgba(240,106,106,.15);color:var(--bad)}
+  .pill{background:var(--chip);color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 7px;font-size:11px}
+  .cite{display:inline-block;background:var(--chip);border:1px solid var(--line);border-radius:6px;padding:1px 7px;margin:2px 3px 0 0;font-size:11px;color:#bcd2f5;cursor:help;text-decoration:none}
+  .cite.learn{border-color:#3b6ea5;color:#9cc6ff}
+  .cite:hover{border-color:var(--accent)}
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--muted);font-weight:600}
+  .muted{color:var(--muted)}
+  .res{padding:8px 0;border-bottom:1px solid var(--line)}
+  .res:last-child{border-bottom:0}
+  details{border:1px solid var(--line);border-radius:8px;margin-bottom:8px;background:var(--panel2)}
+  summary{cursor:pointer;padding:8px 12px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:8px;align-items:center}
+  summary::-webkit-details-marker{display:none}
+  .step{padding:10px 12px;border-bottom:1px solid var(--line)}
+  .step:last-child{border-bottom:0}
+  .step .top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+  .agentname{font-weight:650}
+  .st-ok{color:var(--good)} .st-revised{color:var(--warn)} .st-abstained{color:var(--bad)}
+  .critic{font-size:12px;color:var(--muted);margin-top:4px}
+  .revised-flag{background:rgba(244,183,64,.12);border:1px dashed #7a6326;border-radius:6px;padding:6px 8px;margin-top:6px;font-size:12px}
+  .heat{display:grid;grid-template-columns:1.4fr .5fr .6fr .8fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .heat>div{background:var(--panel2);padding:7px 9px;font-size:12.5px}
+  .heat .h{background:var(--panel);color:var(--muted);font-weight:600}
+  .risk{padding:7px 9px;border-left:3px solid var(--warn);background:var(--panel2);border-radius:0 6px 6px 0;margin-bottom:6px;font-size:12.5px}
+  .risk.high{border-color:var(--bad)} .risk.medium{border-color:var(--warn)} .risk.low{border-color:var(--muted)}
+  .abstain{padding:12px;border:1px dashed var(--bad);border-radius:8px;color:#ffd0d0;background:rgba(240,106,106,.08)}
+  .kpi{display:flex;gap:14px;flex-wrap:wrap;margin-top:4px}
+  .kpi div{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px}
+  .kpi b{display:block;font-size:16px}
+  .foot{color:var(--muted);font-size:11.5px;padding:4px 24px 24px}
+  .spin{color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Cert<span>Mesh</span> — multi-agent certification enablement</h1>
+  <div class="sub">Microsoft Agent Framework · Microsoft Foundry · Foundry IQ · Work IQ · Fabric IQ · Microsoft Learn MCP — all data synthetic</div>
+</header>
+<div class="disclosure" id="disclosure"></div>
+
+<main>
+  <section>
+    <div class="card">
+      <h2>Try a scenario</h2>
+      <div class="presets" id="presets"></div>
+    </div>
+    <div class="card">
+      <h2>Request</h2>
+      <div class="row">
+        <div>
+          <label>View</label>
+          <select id="view"><option value="learner">Learner</option><option value="manager">Manager</option></select>
+        </div>
+        <div>
+          <label>Team (manager view)</label>
+          <input id="team" placeholder="e.g. TEAM-A (blank = all)"/>
+        </div>
+      </div>
+      <label>Goal</label>
+      <textarea id="goal" placeholder="e.g. Help me prepare for AZ-204"></textarea>
+      <div class="row">
+        <div><label>Role (optional)</label><input id="role" placeholder="e.g. DevOps Engineer"/></div>
+        <div><label>Learner id (optional)</label><input id="learner_id" placeholder="e.g. L-1012"/></div>
+        <div><label>Focus h/week (optional)</label><input id="hours" type="number" min="0" step="0.5" placeholder="auto"/></div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button id="run">Run agents</button>
+        <button class="secondary" id="clear">Clear</button>
+        <span class="spin" id="status"></span>
+      </div>
+    </div>
+    <div id="results"></div>
+  </section>
+
+  <section>
+    <div class="card">
+      <h2>Orchestration trace <span class="pill" id="backends"></span></h2>
+      <div id="trace"><div class="muted">Run a scenario to see the planner → specialists → critic flow.</div></div>
+    </div>
+  </section>
+</main>
+<div class="foot">All learners, work signals, certifications and documents are SYNTHETIC and for demonstration only. Manager insights are aggregate and thresholded; no individual PII is exposed.</div>
+
+<script>
+const $ = id => document.getElementById(id);
+let CITES = [];
+
+async function loadPresets(){
+  const r = await fetch('/api/presets'); const d = await r.json();
+  $('disclosure').textContent = '🛈 ' + d.disclosure;
+  const box = $('presets');
+  d.presets.forEach(p=>{
+    const b=document.createElement('button'); b.textContent=p.label; b.title=p.description;
+    b.onclick=()=>{ applyReq(p.request); run(); };
+    box.appendChild(b);
+  });
+  try{ const h=await (await fetch('/healthz')).json();
+    $('backends').textContent = `model:${h.model_backend} · retrieval:${h.retrieval_backend}`; }catch(e){}
+}
+function applyReq(req){
+  $('view').value=req.view||'learner'; $('goal').value=req.goal||'';
+  $('role').value=req.role||''; $('learner_id').value=req.learner_id||'';
+  $('team').value=req.team||''; $('hours').value=req.available_hours_per_week||'';
+}
+function reqFromForm(){
+  const r={view:$('view').value, goal:$('goal').value};
+  if($('role').value) r.role=$('role').value;
+  if($('learner_id').value) r.learner_id=$('learner_id').value;
+  if($('team').value) r.team=$('team').value;
+  if($('hours').value) r.available_hours_per_week=parseFloat($('hours').value);
+  return r;
+}
+function citeChip(c){
+  const i = CITES.indexOf(c)+1 || (CITES.push(c), CITES.length);
+  const cls = c.kind==='ms_learn' ? 'cite learn' : 'cite';
+  const tip = `${c.title}\n“${c.snippet}”\n— ${c.locator}`;
+  if(c.url) return `<a class="${cls}" href="${c.url}" target="_blank" title="${esc(tip)}">[${i}] ${esc(c.title)} ↗</a>`;
+  return `<span class="${cls}" title="${esc(tip)}">[${i}] ${esc(c.title)}</span>`;
+}
+const esc = s => (s||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+
+async function run(){
+  $('status').textContent='running agents…'; $('run').disabled=true; CITES=[];
+  try{
+    const res=await fetch('/api/run',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(reqFromForm())});
+    const r=await res.json();
+    render(r); renderTrace(r);
+  }catch(e){ $('results').innerHTML=`<div class="card abstain">Error: ${esc(e.message)}</div>`; }
+  finally{ $('status').textContent=''; $('run').disabled=false; }
+}
+
+function render(r){
+  const out=$('results'); out.innerHTML='';
+  if(r.abstained && r.plan.agents_to_run.length===0){
+    out.innerHTML=`<div class="card"><h2>Safe abstain</h2><div class="abstain">${esc(r.messages.join(' '))}</div>
+      <div class="muted" style="margin-top:8px">Confidence ${(r.confidence*100|0)}% — flagged for human review.</div></div>`;
+    return;
+  }
+  if(r.manager_insights){ renderManager(out,r); return; }
+  renderLearner(out,r);
+}
+
+function renderLearner(out,r){
+  if(r.curated_path){
+    const p=r.curated_path;
+    let res = p.resources.map(x=>`<div class="res"><b>${esc(x.title)}</b> <span class="pill">${esc(x.skill)}</span>
+      ${x.est_hours?`<span class="pill">${x.est_hours}h</span>`:''}<div>${citeChip(x.citation)}</div></div>`).join('');
+    out.innerHTML += `<div class="card"><h2>① Learning Path Curator</h2>
+      <div>${esc(p.summary)}</div>
+      <div style="margin:8px 0"><span class="pill">${p.skills.length} skills</span> <span class="pill">${p.resources.length} cited resources</span></div>
+      ${res}</div>`;
+  }
+  if(r.study_plan){
+    const s=r.study_plan, c=s.capacity;
+    const rows=s.milestones.map(m=>`<tr><td>W${m.week}</td><td>${esc(m.title)}</td><td>${m.hours}h</td>
+      <td><span class="pill">${m.difficulty}</span></td><td>${m.citation?citeChip(m.citation):''}</td></tr>`).join('');
+    out.innerHTML += `<div class="card"><h2>② Study Plan Generator</h2>
+      <div class="kpi">
+        <div>weeks<b>${s.total_weeks}</b></div>
+        <div>focus h/wk<b>${c.available_hours_per_week}</b></div>
+        <div>utilisation<b>${Math.round(c.utilisation*100)}%</b></div>
+        <div>capacity<b><span class="badge ${c.fits?'fit':'nofit'}">${c.fits?'FITS':'OVER'}</span></b></div>
+      </div>
+      <div class="muted" style="margin:8px 0">${esc(c.note)}</div>
+      <table><tr><th>Wk</th><th>Milestone</th><th>Hrs</th><th>Level</th><th>Source</th></tr>${rows}</table></div>`;
+  }
+  if(r.engagement_plan){
+    const e=r.engagement_plan;
+    const w=e.weekly_windows.map(x=>`<span class="pill">${x.day} ${esc(x.slot)}</span>`).join(' ');
+    out.innerHTML += `<div class="card"><h2>③ Engagement Agent (Work IQ)</h2>
+      <div><b>${esc(e.cadence)}</b></div><div style="margin:6px 0">${w}</div>
+      <div>${esc(e.next_reminder)}</div>
+      <div class="muted" style="margin-top:6px">${esc(e.capacity_note)} · ${esc(e.privacy_note)}</div></div>`;
+  }
+  if(r.assessment){
+    const a=r.assessment;
+    const qs=a.questions.map(q=>`<details><summary>${esc(q.stem)} <span class="pill">${esc(q.skill)}</span></summary>
+      <div style="padding:0 12px 10px">
+        ${q.options.map((o,i)=>`<div>${i===q.answer_index?'✅':'▫️'} ${esc(o)}</div>`).join('')}
+        <div class="muted" style="margin-top:6px">${esc(q.explanation)}</div>
+        <div>${citeChip(q.citation)}</div></div></details>`).join('');
+    out.innerHTML += `<div class="card"><h2>④ Assessment Agent</h2>
+      <div><span class="badge ${a.readiness}">${a.readiness.replace('_',' ').toUpperCase()}</span>
+        <span class="pill">est ${Math.round(a.estimated_score*100)}% vs ${Math.round(a.threshold*100)}% threshold</span></div>
+      <div class="muted" style="margin:8px 0">${esc(a.rationale)} — <b>Next:</b> ${esc(a.next_recommendation)}</div>
+      ${qs}</div>`;
+  }
+  renderSources(out);
+}
+
+function renderManager(out,r){
+  const mi=r.manager_insights;
+  let heat=`<div class="heat"><div class="h">Group</div><div class="h">n</div><div class="h">avg</div><div class="h">readiness</div>`;
+  mi.summaries.forEach(s=>{ heat+=`<div>${esc(s.scope)}</div><div>${s.n_learners}</div>
+    <div>${Math.round(s.avg_practice_score*100)}%</div>
+    <div><span class="badge ${s.readiness_band}">${s.readiness_band.replace('_',' ')}</span></div>`; });
+  heat+='</div>';
+  const risks=mi.risks.map(x=>`<div class="risk ${x.severity}"><b>${x.kind.toUpperCase()}</b> · ${esc(x.scope)} — ${esc(x.detail)}</div>`).join('');
+  out.innerHTML=`<div class="card"><h2>Manager Insights <span class="badge ready">PII-safe</span></h2>
+    <div class="muted" style="margin-bottom:8px">${esc(mi.notes)}</div>
+    ${heat}
+    <h2 style="margin-top:14px">Risk flags</h2>${risks||'<div class="muted">No risks flagged.</div>'}
+    ${mi.suppressed_groups.length?`<div class="muted" style="margin-top:8px">Suppressed for privacy (n&lt;${mi.min_group_size}): ${mi.suppressed_groups.map(esc).join(', ')}</div>`:''}
+    </div>`;
+}
+
+function renderSources(out){
+  if(!CITES.length) return;
+  const list=CITES.map((c,i)=>`<div class="res"><b>[${i+1}] ${esc(c.title)}</b> <span class="pill">${c.kind==='ms_learn'?'Microsoft Learn':'Foundry IQ'}</span>
+    <div class="muted">“${esc(c.snippet)}”</div><div class="muted">${esc(c.locator)}${c.url?` · <a class="cite learn" href="${c.url}" target="_blank">open ↗</a>`:''}</div></div>`).join('');
+  out.innerHTML+=`<div class="card"><h2>Sources (grounded citations)</h2>${list}</div>`;
+}
+
+function renderTrace(r){
+  const t=$('trace'); const steps=r.trace.steps.map(s=>{
+    const v=s.critic;
+    const cl = s.status==='ok'?'st-ok':s.status==='revised'?'st-revised':s.status==='abstained'?'st-abstained':'';
+    let critic='';
+    if(v){ critic=`<div class="critic">critic: <b>${v.action}</b> · grounded ${v.claims_supported}/${v.claims_checked}`
+        + (v.pii_findings&&v.pii_findings.length?` · PII findings ${v.pii_findings.length}`:'')
+        + (v.notes?` — ${esc(v.notes)}`:'')+`</div>`; }
+    let flag = s.status==='revised'
+      ? `<div class="revised-flag">↻ Reflection loop: critic rejected an ungrounded claim → agent revised (iteration ${s.reflections+1}).</div>`:'';
+    return `<div class="step"><div class="top"><span class="agentname">${esc(s.agent)}</span>
+      <span class="${cl}">${s.action} · ${s.status} · ${s.duration_ms}ms</span></div>
+      <div class="muted">${esc(s.output_summary)}</div>${critic}${flag}</div>`;
+  }).join('');
+  t.innerHTML=`<div class="muted" style="margin-bottom:8px">Plan: ${esc(r.plan.reasoning)}</div>${steps}`;
+}
+
+$('run').onclick=run;
+$('clear').onclick=()=>{ $('results').innerHTML=''; $('trace').innerHTML='<div class="muted">Cleared.</div>'; };
+loadPresets();
+</script>
+</body>
+</html>

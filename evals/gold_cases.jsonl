@@ -1,0 +1,55 @@
+{"id": "route-manager-all", "kind": "routing", "input": {"view": "manager", "goal": "How are my teams progressing toward their certifications?"}, "expect": {"agents": ["Manager Insights Agent"]}}
+{"id": "route-manager-teamA", "kind": "routing", "input": {"view": "manager", "team": "TEAM-A", "goal": "team readiness"}, "expect": {"agents": ["Manager Insights Agent"]}}
+{"id": "route-learner-cert", "kind": "routing", "input": {"view": "learner", "goal": "Help me prepare for AZ-204", "role": "Cloud Platform Engineer"}, "expect": {"agents": ["Learning Path Curator", "Study Plan Generator", "Engagement Agent", "Assessment Agent"]}}
+{"id": "route-learner-byid", "kind": "routing", "input": {"view": "learner", "learner_id": "L-1001", "goal": "I want to get certified"}, "expect": {"agents": ["Learning Path Curator", "Study Plan Generator", "Engagement Agent", "Assessment Agent"]}}
+{"id": "route-learner-role-only", "kind": "routing", "input": {"view": "learner", "role": "DevOps Engineer", "goal": "what should I study?"}, "expect": {"agents": ["Learning Path Curator", "Study Plan Generator", "Engagement Agent", "Assessment Agent"]}}
+{"id": "route-learner-dp203", "kind": "routing", "input": {"view": "learner", "goal": "DP-203 preparation"}, "expect": {"agents": ["Learning Path Curator", "Study Plan Generator", "Engagement Agent", "Assessment Agent"]}}
+{"id": "route-out-of-corpus", "kind": "routing", "input": {"view": "learner", "goal": "I want the AWS Solutions Architect certification"}, "expect": {"agents": []}}
+{"id": "route-ambiguous", "kind": "routing", "input": {"view": "learner", "goal": "I want to grow professionally"}, "expect": {"agents": []}}
+{"id": "ground-az900", "kind": "grounding", "input": {"view": "learner", "goal": "Prepare for AZ-900"}, "expect": {"grounding_rate": 1.0}}
+{"id": "ground-az204", "kind": "grounding", "input": {"view": "learner", "goal": "Prepare for AZ-204"}, "expect": {"grounding_rate": 1.0}}
+{"id": "ground-az400", "kind": "grounding", "input": {"view": "learner", "goal": "Prepare for AZ-400"}, "expect": {"grounding_rate": 1.0}}
+{"id": "ground-dp203", "kind": "grounding", "input": {"view": "learner", "goal": "Prepare for DP-203"}, "expect": {"grounding_rate": 1.0}}
+{"id": "ground-fhir", "kind": "grounding", "input": {"view": "learner", "goal": "Prepare for HL7-FHIR-1"}, "expect": {"grounding_rate": 1.0}}
+{"id": "ground-clinsafe1", "kind": "grounding", "input": {"view": "learner", "goal": "Prepare for CLIN-SAFE-1"}, "expect": {"grounding_rate": 1.0}}
+{"id": "ground-clinsafe2", "kind": "grounding", "input": {"view": "learner", "goal": "Prepare for CLIN-SAFE-2"}, "expect": {"grounding_rate": 1.0}}
+{"id": "ground-telehealth", "kind": "grounding", "input": {"view": "learner", "goal": "Prepare for TELEHEALTH-1"}, "expect": {"grounding_rate": 1.0}}
+{"id": "ground-gdpr", "kind": "grounding", "input": {"view": "learner", "goal": "Prepare for GDPR-HC-2"}, "expect": {"grounding_rate": 1.0}}
+{"id": "assess-az900", "kind": "assessment_grounding", "input": {"view": "learner", "goal": "AZ-900"}, "expect": {"grounding_rate": 1.0}}
+{"id": "assess-az204", "kind": "assessment_grounding", "input": {"view": "learner", "goal": "AZ-204"}, "expect": {"grounding_rate": 1.0}}
+{"id": "assess-az400", "kind": "assessment_grounding", "input": {"view": "learner", "goal": "AZ-400"}, "expect": {"grounding_rate": 1.0}}
+{"id": "assess-dp203", "kind": "assessment_grounding", "input": {"view": "learner", "goal": "DP-203"}, "expect": {"grounding_rate": 1.0}}
+{"id": "assess-fhir", "kind": "assessment_grounding", "input": {"view": "learner", "goal": "HL7-FHIR-1"}, "expect": {"grounding_rate": 1.0}}
+{"id": "assess-clinsafe1", "kind": "assessment_grounding", "input": {"view": "learner", "goal": "CLIN-SAFE-1"}, "expect": {"grounding_rate": 1.0}}
+{"id": "assess-clinsafe2", "kind": "assessment_grounding", "input": {"view": "learner", "goal": "CLIN-SAFE-2"}, "expect": {"grounding_rate": 1.0}}
+{"id": "assess-telehealth", "kind": "assessment_grounding", "input": {"view": "learner", "goal": "TELEHEALTH-1"}, "expect": {"grounding_rate": 1.0}}
+{"id": "assess-gdpr", "kind": "assessment_grounding", "input": {"view": "learner", "goal": "GDPR-HC-2"}, "expect": {"grounding_rate": 1.0}}
+{"id": "capacity-constrained", "kind": "capacity", "input": {"view": "learner", "learner_id": "L-1012", "goal": "CLIN-SAFE-2"}, "expect": {"fits": true}}
+{"id": "capacity-strong", "kind": "capacity", "input": {"view": "learner", "learner_id": "L-1005", "goal": "AZ-204"}, "expect": {"fits": true}}
+{"id": "capacity-override-2h", "kind": "capacity", "input": {"view": "learner", "goal": "AZ-204", "available_hours_per_week": 2}, "expect": {"fits": true}}
+{"id": "capacity-override-1h", "kind": "capacity", "input": {"view": "learner", "goal": "DP-203", "available_hours_per_week": 1}, "expect": {"fits": true}}
+{"id": "capacity-default-anon", "kind": "capacity", "input": {"view": "learner", "goal": "AZ-400"}, "expect": {"fits": true}}
+{"id": "capacity-clinical", "kind": "capacity", "input": {"view": "learner", "learner_id": "L-1010", "goal": "CLIN-SAFE-1"}, "expect": {"fits": true}}
+{"id": "pii-all", "kind": "pii", "input": {"view": "manager", "goal": "overall readiness"}, "expect": {"pii_leak": 0}}
+{"id": "pii-teamA", "kind": "pii", "input": {"view": "manager", "team": "TEAM-A", "goal": "team A"}, "expect": {"pii_leak": 0}}
+{"id": "pii-teamB", "kind": "pii", "input": {"view": "manager", "team": "TEAM-B", "goal": "team B"}, "expect": {"pii_leak": 0}}
+{"id": "pii-teamC", "kind": "pii", "input": {"view": "manager", "team": "TEAM-C", "goal": "team C"}, "expect": {"pii_leak": 0}}
+{"id": "pii-teamD", "kind": "pii", "input": {"view": "manager", "team": "TEAM-D", "goal": "team D"}, "expect": {"pii_leak": 0}}
+{"id": "readiness-L1005", "kind": "readiness", "input": {"view": "learner", "learner_id": "L-1005", "goal": "AZ-204"}, "expect": {"readiness": "ready", "passed": true}}
+{"id": "readiness-L1001", "kind": "readiness", "input": {"view": "learner", "learner_id": "L-1001", "goal": "AZ-204"}, "expect": {"readiness": "ready", "passed": true}}
+{"id": "readiness-L1002", "kind": "readiness", "input": {"view": "learner", "learner_id": "L-1002", "goal": "AZ-204"}, "expect": {"readiness": "borderline", "passed": false}}
+{"id": "readiness-L1006", "kind": "readiness", "input": {"view": "learner", "learner_id": "L-1006", "goal": "DP-203"}, "expect": {"readiness": "not_ready", "passed": false}}
+{"id": "readiness-L1009", "kind": "readiness", "input": {"view": "learner", "learner_id": "L-1009", "goal": "HL7-FHIR-1"}, "expect": {"readiness": "borderline", "passed": false}}
+{"id": "readiness-L1011", "kind": "readiness", "input": {"view": "learner", "learner_id": "L-1011", "goal": "TELEHEALTH-1"}, "expect": {"readiness": "ready", "passed": true}}
+{"id": "readiness-L1012", "kind": "readiness", "input": {"view": "learner", "learner_id": "L-1012", "goal": "CLIN-SAFE-2"}, "expect": {"readiness": "not_ready", "passed": false}}
+{"id": "readiness-L1017", "kind": "readiness", "input": {"view": "learner", "learner_id": "L-1017", "goal": "GDPR-HC-2"}, "expect": {"readiness": "borderline", "passed": false}}
+{"id": "abstain-aws", "kind": "abstain", "input": {"view": "learner", "goal": "AWS Solutions Architect certification"}, "expect": {"abstained": true, "reason": "unknown_cert"}}
+{"id": "abstain-cka", "kind": "abstain", "input": {"view": "learner", "goal": "I want the CKA Kubernetes certification"}, "expect": {"abstained": true, "reason": "unknown_cert"}}
+{"id": "abstain-quantum", "kind": "abstain", "input": {"view": "learner", "goal": "a quantum computing certification"}, "expect": {"abstained": true, "reason": "unknown_cert"}}
+{"id": "abstain-vague", "kind": "abstain", "input": {"view": "learner", "goal": "I want to grow"}, "expect": {"abstained": true, "reason": "ambiguous"}}
+{"id": "abstain-empty", "kind": "abstain", "input": {"view": "learner", "goal": ""}, "expect": {"abstained": true, "reason": "ambiguous"}}
+{"id": "abstain-help", "kind": "abstain", "input": {"view": "learner", "goal": "help me improve my skills"}, "expect": {"abstained": true, "reason": "ambiguous"}}
+{"id": "lang-ca-az204", "kind": "language", "input": {"view": "learner", "goal": "Vull preparar el certificat AZ-204, què necessito?"}, "expect": {"language": "ca", "agents": ["Learning Path Curator", "Study Plan Generator", "Engagement Agent", "Assessment Agent"]}}
+{"id": "lang-es-az204", "kind": "language", "input": {"view": "learner", "goal": "Quiero preparar la certificación AZ-204"}, "expect": {"language": "es", "agents": ["Learning Path Curator", "Study Plan Generator", "Engagement Agent", "Assessment Agent"]}}
+{"id": "lang-es-dp203", "kind": "language", "input": {"view": "learner", "goal": "Necesito estudiar para el examen DP-203"}, "expect": {"language": "es", "agents": ["Learning Path Curator", "Study Plan Generator", "Engagement Agent", "Assessment Agent"]}}
+{"id": "lang-en-az400", "kind": "language", "input": {"view": "learner", "goal": "I need to study for the AZ-400 exam"}, "expect": {"language": "en", "agents": ["Learning Path Curator", "Study Plan Generator", "Engagement Agent", "Assessment Agent"]}}

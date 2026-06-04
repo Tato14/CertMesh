@@ -1,0 +1,28 @@
+{
+  "_meta": {
+    "synthetic": true,
+    "notice": "SYNTHETIC demonstration data only. All identifiers are fabricated (L-1xxx / EMP-0xx); no real people, emails or PII. Not real HR records.",
+    "org": "Northwind Health (fictional healthcare provider) — workforce certification-enablement programme",
+    "schema": "learner_id, employee_id, role, track, team, certification, practice_score_avg(0..1), hours_studied, exam_outcome"
+  },
+  "records": [
+    { "learner_id": "L-1001", "employee_id": "EMP-001", "role": "Cloud Platform Engineer", "track": "technical", "team": "TEAM-A", "certification": "AZ-204", "practice_score_avg": 0.78, "hours_studied": 42, "exam_outcome": "not_attempted" },
+    { "learner_id": "L-1002", "employee_id": "EMP-002", "role": "Cloud Platform Engineer", "track": "technical", "team": "TEAM-A", "certification": "AZ-204", "practice_score_avg": 0.62, "hours_studied": 28, "exam_outcome": "not_attempted" },
+    { "learner_id": "L-1003", "employee_id": "EMP-003", "role": "DevOps Engineer", "track": "technical", "team": "TEAM-A", "certification": "AZ-400", "practice_score_avg": 0.71, "hours_studied": 50, "exam_outcome": "not_attempted" },
+    { "learner_id": "L-1004", "employee_id": "EMP-004", "role": "DevOps Engineer", "track": "technical", "team": "TEAM-A", "certification": "AZ-400", "practice_score_avg": 0.55, "hours_studied": 22, "exam_outcome": "fail" },
+    { "learner_id": "L-1005", "employee_id": "EMP-005", "role": "Cloud Platform Engineer", "track": "technical", "team": "TEAM-A", "certification": "AZ-204", "practice_score_avg": 0.83, "hours_studied": 58, "exam_outcome": "pass" },
+    { "learner_id": "L-1006", "employee_id": "EMP-006", "role": "Health Data Analyst", "track": "technical", "team": "TEAM-B", "certification": "DP-203", "practice_score_avg": 0.48, "hours_studied": 18, "exam_outcome": "not_attempted" },
+    { "learner_id": "L-1007", "employee_id": "EMP-007", "role": "Health Data Analyst", "track": "technical", "team": "TEAM-B", "certification": "DP-203", "practice_score_avg": 0.52, "hours_studied": 24, "exam_outcome": "fail" },
+    { "learner_id": "L-1008", "employee_id": "EMP-008", "role": "Health Data Analyst", "track": "technical", "team": "TEAM-B", "certification": "DP-203", "practice_score_avg": 0.45, "hours_studied": 15, "exam_outcome": "not_attempted" },
+    { "learner_id": "L-1009", "employee_id": "EMP-009", "role": "Integration Engineer", "track": "technical", "team": "TEAM-B", "certification": "HL7-FHIR-1", "practice_score_avg": 0.69, "hours_studied": 30, "exam_outcome": "not_attempted" },
+    { "learner_id": "L-1010", "employee_id": "EMP-010", "role": "Clinical Systems Specialist", "track": "clinical", "team": "TEAM-C", "certification": "CLIN-SAFE-1", "practice_score_avg": 0.74, "hours_studied": 20, "exam_outcome": "not_attempted" },
+    { "learner_id": "L-1011", "employee_id": "EMP-011", "role": "Telehealth Coordinator", "track": "clinical", "team": "TEAM-C", "certification": "TELEHEALTH-1", "practice_score_avg": 0.80, "hours_studied": 16, "exam_outcome": "pass" },
+    { "learner_id": "L-1012", "employee_id": "EMP-012", "role": "Clinical Safety Officer", "track": "clinical", "team": "TEAM-C", "certification": "CLIN-SAFE-2", "practice_score_avg": 0.66, "hours_studied": 26, "exam_outcome": "not_attempted" },
+    { "learner_id": "L-1013", "employee_id": "EMP-013", "role": "Clinical Systems Specialist", "track": "clinical", "team": "TEAM-C", "certification": "CLIN-SAFE-1", "practice_score_avg": 0.77, "hours_studied": 22, "exam_outcome": "not_attempted" },
+    { "learner_id": "L-1014", "employee_id": "EMP-014", "role": "Telehealth Coordinator", "track": "clinical", "team": "TEAM-C", "certification": "TELEHEALTH-1", "practice_score_avg": 0.71, "hours_studied": 14, "exam_outcome": "not_attempted" },
+    { "learner_id": "L-1015", "employee_id": "EMP-015", "role": "Privacy & Compliance Analyst", "track": "compliance", "team": "TEAM-D", "certification": "GDPR-HC-2", "practice_score_avg": 0.58, "hours_studied": 19, "exam_outcome": "not_attempted" },
+    { "learner_id": "L-1016", "employee_id": "EMP-016", "role": "Privacy & Compliance Analyst", "track": "compliance", "team": "TEAM-D", "certification": "GDPR-HC-2", "practice_score_avg": 0.63, "hours_studied": 21, "exam_outcome": "not_attempted" },
+    { "learner_id": "L-1017", "employee_id": "EMP-017", "role": "Information Governance Lead", "track": "compliance", "team": "TEAM-D", "certification": "GDPR-HC-2", "practice_score_avg": 0.79, "hours_studied": 28, "exam_outcome": "not_attempted" },
+    { "learner_id": "L-1018", "employee_id": "EMP-018", "role": "Privacy & Compliance Analyst", "track": "compliance", "team": "TEAM-A", "certification": "GDPR-HC-2", "practice_score_avg": 0.60, "hours_studied": 20, "exam_outcome": "not_attempted" }
+  ]
+}

@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Secrets — NEVER commit. Only .env.example is tracked.
+.env
+.env.*
+!.env.example
+
+# Local artifacts
+*.log
+.DS_Store
+evals/_last_scorecard.json
+evals/_foundry_eval_rows.jsonl
+.idx/
+
+# Editor / harness local settings
+.claude/settings.local.json
+.vscode/

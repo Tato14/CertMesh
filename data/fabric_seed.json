@@ -1,0 +1,102 @@
+{
+  "_meta": {
+    "synthetic": true,
+    "notice": "SYNTHETIC certification ontology for demonstration. Real Microsoft exam codes (AZ-204, AZ-400, DP-203, AZ-900) are referenced for realism; the internal certs (CLIN-SAFE-*, GDPR-HC-2, TELEHEALTH-1, HL7-FHIR-1) are FICTIONAL. Skill lists, recommended hours and thresholds are illustrative, not official Microsoft exam data. This file is the seed for the Fabric IQ semantic layer (entities + relationships).",
+    "entities": ["certification", "skill", "role", "track"],
+    "relationships": ["prerequisite_of", "required_for_role", "covers_skill"]
+  },
+  "certifications": {
+    "AZ-900": {
+      "title": "Microsoft Azure Fundamentals",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 20,
+      "pass_threshold": 0.70,
+      "prerequisites": [],
+      "skills": ["Cloud concepts", "Core Azure services", "Security and compliance", "Pricing and SLAs"]
+    },
+    "AZ-204": {
+      "title": "Developing Solutions for Microsoft Azure",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 60,
+      "pass_threshold": 0.70,
+      "prerequisites": ["AZ-900"],
+      "skills": ["Azure App Service", "Azure Functions", "Azure Storage", "Azure Cosmos DB", "Key Vault and managed identity", "Container Apps"]
+    },
+    "AZ-400": {
+      "title": "Designing and Implementing Microsoft DevOps Solutions",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 80,
+      "pass_threshold": 0.70,
+      "prerequisites": ["AZ-204"],
+      "skills": ["CI/CD pipelines", "Infrastructure as Code", "Release management", "Secure DevOps", "Observability and feedback"]
+    },
+    "DP-203": {
+      "title": "Data Engineering on Microsoft Azure",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 70,
+      "pass_threshold": 0.70,
+      "prerequisites": ["AZ-900"],
+      "skills": ["Data storage design", "Batch and stream processing", "Azure Synapse Analytics", "Data security and governance", "Pipeline orchestration"]
+    },
+    "HL7-FHIR-1": {
+      "title": "Health Interoperability with FHIR (internal)",
+      "track": "technical",
+      "real_exam": false,
+      "recommended_hours": 35,
+      "pass_threshold": 0.75,
+      "prerequisites": ["AZ-900"],
+      "skills": ["FHIR resources", "RESTful FHIR APIs", "Terminology and code systems", "Interoperability standards"]
+    },
+    "CLIN-SAFE-1": {
+      "title": "Clinical Safety Foundations (internal)",
+      "track": "clinical",
+      "real_exam": false,
+      "recommended_hours": 25,
+      "pass_threshold": 0.75,
+      "prerequisites": [],
+      "skills": ["Clinical risk basics", "Hazard logging", "Clinical safety case", "Incident reporting"]
+    },
+    "CLIN-SAFE-2": {
+      "title": "Clinical Safety Practitioner (internal)",
+      "track": "clinical",
+      "real_exam": false,
+      "recommended_hours": 40,
+      "pass_threshold": 0.80,
+      "prerequisites": ["CLIN-SAFE-1"],
+      "skills": ["Clinical risk management plan", "Safety case authoring", "Hazard workshop facilitation", "Post-market surveillance"]
+    },
+    "TELEHEALTH-1": {
+      "title": "Telehealth Systems Operations (internal)",
+      "track": "clinical",
+      "real_exam": false,
+      "recommended_hours": 20,
+      "pass_threshold": 0.70,
+      "prerequisites": [],
+      "skills": ["Virtual consultation workflow", "Device onboarding", "Patient identity verification", "Telehealth incident handling"]
+    },
+    "GDPR-HC-2": {
+      "title": "Healthcare Data Protection Practitioner (internal)",
+      "track": "compliance",
+      "real_exam": false,
+      "recommended_hours": 30,
+      "pass_threshold": 0.80,
+      "prerequisites": [],
+      "skills": ["Lawful basis for health data", "DPIA for clinical systems", "Subject access requests", "Breach handling", "Special category data"]
+    }
+  },
+  "roles": {
+    "Cloud Platform Engineer": { "track": "technical", "required_certs": ["AZ-900", "AZ-204"] },
+    "DevOps Engineer": { "track": "technical", "required_certs": ["AZ-204", "AZ-400"] },
+    "Health Data Analyst": { "track": "technical", "required_certs": ["AZ-900", "DP-203"] },
+    "Integration Engineer": { "track": "technical", "required_certs": ["AZ-900", "HL7-FHIR-1"] },
+    "Clinical Systems Specialist": { "track": "clinical", "required_certs": ["CLIN-SAFE-1", "TELEHEALTH-1"] },
+    "Telehealth Coordinator": { "track": "clinical", "required_certs": ["TELEHEALTH-1"] },
+    "Clinical Safety Officer": { "track": "clinical", "required_certs": ["CLIN-SAFE-1", "CLIN-SAFE-2"] },
+    "Privacy & Compliance Analyst": { "track": "compliance", "required_certs": ["GDPR-HC-2"] },
+    "Information Governance Lead": { "track": "compliance", "required_certs": ["GDPR-HC-2", "CLIN-SAFE-1"] }
+  }
+}
