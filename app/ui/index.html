@@ -183,8 +183,12 @@ function renderLearner(out,r){
     const p=r.curated_path;
     let res = p.resources.map(x=>`<div class="res"><b>${esc(x.title)}</b> <span class="pill">${esc(x.skill)}</span>
       ${x.est_hours?`<span class="pill">${x.est_hours}h</span>`:''}<div>${citeChip(x.citation)}</div></div>`).join('');
+    const narr = p.narrative ? `<div style="margin:10px 0;padding:10px 12px;border-left:3px solid #6aa6ff;background:#1a2238;border-radius:6px;white-space:pre-wrap">
+      <span class="pill">✨ AI coach · ${esc(p.narrative_source||'foundry')} (gpt-4o)</span>
+      <div style="margin-top:6px">${esc(p.narrative)}</div></div>` : '';
     out.innerHTML += `<div class="card"><h2>① Learning Path Curator</h2>
       <div>${esc(p.summary)}</div>
+      ${narr}
       <div style="margin:8px 0"><span class="pill">${p.skills.length} skills</span> <span class="pill">${p.resources.length} cited resources</span></div>
       ${res}</div>`;
   }

@@ -244,7 +244,7 @@ class FoundryIQ:
                     url=r.get("url"),
                     kind="foundry_iq",
                     score=float(r.get("@search.score", 0.0)),
-                    locator=str(r.get("title", "")),
+                    locator=str(r.get("locator") or r.get("title", "")),
                 ))
             return out
         except Exception:

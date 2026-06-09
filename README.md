@@ -125,6 +125,11 @@ Foundry tracing, managed evaluators). Managed identity (`DefaultAzureCredential`
 is preferred over keys. Deploy as a Foundry **Hosted Agent**:
 [deploy/deploy_hosted_agent.md](deploy/deploy_hosted_agent.md).
 
+**Reproducible live setup (from scratch):** step-by-step provisioning — Azure CLI,
+the `[azure]` SDKs, the Foundry resource + `gpt-4o` deployment, and the `.env`
+wiring, with every installed version pinned — is in
+[docs/live-azure-setup.md](docs/live-azure-setup.md).
+
 ## Synthetic data & Responsible AI
 
 - **Synthetic only.** No real PII anywhere; real Microsoft exam codes (AZ-204,

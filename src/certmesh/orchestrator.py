@@ -102,6 +102,7 @@ class Orchestrator:
             available_hours_per_week=req.available_hours_per_week,
             team=req.team, goal=req.goal,
             fabric=self.fabric, foundry=self.foundry, work=self.work, ms_learn=self.ms_learn,
+            model=self.model,
         )
 
     # ── planning ──────────────────────────────────────────────────────────────

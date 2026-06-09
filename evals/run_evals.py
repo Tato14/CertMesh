@@ -16,8 +16,21 @@ Usage:  python -m evals.run_evals  [path/to/gold_cases.jsonl]
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
+
+# The scorecard is the deterministic CI gate: default to offline backends + the
+# Microsoft Learn offline cache so results are reproducible regardless of any
+# local .env pointing at live Azure. Each uses setdefault, so an explicit shell
+# override (e.g. CERTMESH_MODEL_BACKEND=foundry) still wins. The managed/live
+# evaluators live in evals/foundry_eval.py.
+os.environ.setdefault("CERTMESH_MODEL_BACKEND", "offline")
+os.environ.setdefault("CERTMESH_MCP_ENABLED", "false")
+os.environ.setdefault("AZURE_SEARCH_ENDPOINT", "")
+os.environ.setdefault("AZURE_SEARCH_API_KEY", "")
+os.environ.setdefault("AZURE_AI_PROJECT_ENDPOINT", "")
+os.environ.setdefault("AZURE_AI_API_KEY", "")
 
 from certmesh.orchestrator import get_orchestrator
 from certmesh.schemas import LearningRequest

@@ -85,9 +85,42 @@ class CuratorAgent:
             certification=cert, role=ctx.role, skills=skills,
             resources=resources, summary=summary, citations=citations,
         )
+        # Optional Foundry-model coaching gloss. This NEVER becomes a grounded
+        # claim (it is not added to quoted_claims/citations, so the critic does
+        # not check it); it only rephrases the already-grounded summary in the
+        # learner's language. Any model failure leaves narrative=None.
+        self._add_narrative(ctx, path, skills, summary)
         return AgentOutput(
             output=path, summary=summary, sources=sources,
             source_texts=source_texts, quoted_claims=quoted_claims,
             reflections=iteration,
             abstained=not resources,
         )
+
+    def _add_narrative(self, ctx: AgentContext, path: CuratedPath,
+                       skills: list[str], grounded_summary: str) -> None:
+        """Optional Foundry-model gloss. No-op (narrative stays None) when no real
+        model is configured or the call fails — so behaviour and grounding are
+        identical offline; only the learner-facing prose is enriched when live."""
+        model = getattr(ctx, "model", None)
+        if model is None or not getattr(model, "available", False):
+            return
+        lang_name = {"en": "English", "ca": "Catalan", "es": "Spanish"}.get(ctx.language, "English")
+        system = (
+            f"You are CertMesh's certification coach. Write 2-3 short, encouraging "
+            f"sentences for a learner, in {lang_name}. Only rephrase and contextualise "
+            f"the GROUNDED SUMMARY provided — never introduce facts, resources, numbers "
+            f"or claims that are not in it. Plain text, no markdown."
+        )
+        user = (
+            f"Certification: {path.certification} (role: {path.role}).\n"
+            f"Skills to cover: {', '.join(skills)}.\n"
+            f"GROUNDED SUMMARY: {grounded_summary}"
+        )
+        try:
+            text = model.generate(system, user, temperature=0.3, max_tokens=180).strip()
+        except Exception:  # ModelUnavailable / network / SDK — degrade silently
+            return
+        if text:
+            path.narrative = text
+            path.narrative_source = getattr(model, "name", "foundry")
