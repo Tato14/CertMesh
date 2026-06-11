@@ -177,6 +177,18 @@ class FabricIQ:
         gap = self.pass_threshold(code) - practice_score
         return round(max(0.0, gap), 3)
 
+    def role_track(self, role: str) -> str:
+        """The role's declared track from the seed ontology (deterministic), with
+        a majority-of-required-certs fallback for roles that omit it."""
+        name = self.resolve_role(role)
+        if not name:
+            return "technical"
+        declared = self._roles[name].get("track")
+        if declared:
+            return declared
+        tracks = [self.track_for(c) for c in self._roles[name].get("required_certs", [])]
+        return max(sorted(set(tracks)), key=tracks.count) if tracks else "technical"
+
     def known_roles(self) -> list[str]:
         return list(self._roles)
 

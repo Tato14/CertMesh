@@ -58,7 +58,23 @@ flowchart TD
 1. **FastAPI gateway** (`app/api.py`) receives a `LearningRequest` and calls the orchestrator.
 2. **Orchestrator** (`src/certmesh/orchestrator.py`) detects language, resolves the certification/role/learner/capacity from the IQ layers, and **plans** which specialists to run (the routing decision is the first trace step).
 3. **Specialists** run in sequence; **grounded** agents (Curator, Assessment) pass through the **critic** before their output is accepted — an ungrounded claim triggers a bounded **reflection loop** or an abstain.
-4. The orchestrator assembles an `OrchestrationResult` with a full `OrchestrationTrace` (every agent, its sources, critic verdicts, reflections, and timings).
+4. The orchestrator assembles an `OrchestrationResult` with a full `OrchestrationTrace` (every agent, its sources, critic verdicts, reflections, and timings). The dashboard replays that trace as an animated agent flow using the real per-step timings.
+
+## HTTP surface
+
+| Endpoint | Purpose |
+|---|---|
+| `POST /api/run` | Run the orchestrator (learner or manager view); returns the full `OrchestrationResult` + trace. |
+| `GET /api/presets` | Demo scenario cards + the AI-use disclosure string. |
+| `GET /api/graph` | The Fabric IQ ontology serialised as Cytoscape elements (`role`/`certification`/`skill` nodes with track + level metadata; `requires`/`covers`/`prerequisite` edges) plus per-role certification paths in prerequisite order and the synthetic learner roster for the overlay. The seed covers 31 certifications (major Microsoft exams + fictional internal ones) and 21 roles; the matching grounded corpus lives in `data/knowledge/certification-catalog-extension.md`. |
+| `GET /api/calendar/{id}` | A **simulated** Mon–Fri week for a learner/employee id: synthetic busy blocks consistent with the Work IQ signal (`src/certmesh/calendar_sim.py`) + the Engagement Agent's proposed study slots as first-class events. Never a real tenant. |
+| `GET /api/progress/{learner_id}` | Synthetic weekly progress snapshots (`data/progress_history.json`) + trend feedback against the Fabric IQ threshold. |
+| `GET /api/progress/team/{team_id}` | **Aggregate-only** team progress, held to the manager-view privacy contract: k-anonymity suppression (n < 3) and a belt-and-braces identifier scan (covered by tests). |
+| `GET /healthz` | Backend status for the dashboard's status pills. |
+
+The presentation endpoints (`graph`/`calendar`/`progress`) are additive read-only
+layers over the IQ layers and synthetic datasets — agent contracts, trace
+semantics and eval behaviour are untouched.
 
 See [orchestration.md](orchestration.md) for the planner–executor + critic detail and the trace format, [agents.md](agents.md) for each agent's contract, and [iq-layers.md](iq-layers.md) for the IQ layers.
 
@@ -69,11 +85,21 @@ src/certmesh/
   orchestrator.py     planner–executor + reflection loop + trace assembly
   schemas.py          Pydantic contracts for every I/O + the trace
   config.py           env-driven, cloud-optional configuration
+  calendar_sim.py     deterministic synthetic week (Work IQ extension)
   agents/             curator, study_plan, engagement, assessment, manager_insights, critic
   iq/                 foundry_iq (real), work_iq, fabric_iq (concept-faithful)
   tools/ms_learn_mcp  Microsoft Learn MCP client
   foundry/            model backend (Agent Framework) + OTel tracing
-app/                  FastAPI gateway + single-page dashboard
+app/
+  api.py              FastAPI gateway (run/graph/calendar/progress/presets/healthz)
+  ui/                 zero-build dashboard: index.html + css/ (design system)
+                      + js/ native ES modules (app, trace, learner, graph,
+                      calendar, quiz, progress, manager) — no bundler, no node
 evals/                gold cases + local evaluators + Foundry eval SDK path
 deploy/               Dockerfile + hosted-agent runbook
 ```
+
+The dashboard is intentionally **zero-build**: static files served by the same
+FastAPI app (`make run`), Cytoscape + dagre from pinned CDNs for the graph view
+(with a designed offline fallback), and hand-rolled SVG for charts and the trace
+flow — judges need nothing but Python.

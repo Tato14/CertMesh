@@ -141,7 +141,11 @@ def main(argv: list[str] | None = None) -> int:
     (_HERE / "_last_scorecard.json").write_text(
         json.dumps(report["metrics"], indent=2), encoding="utf-8")
     passed = all(report["gates"].values())
-    print("RESULT:", "ALL GATES PASSED ✅" if passed else "GATE FAILURE ❌")
+    line = "RESULT: " + ("ALL GATES PASSED ✅" if passed else "GATE FAILURE ❌")
+    try:
+        print(line)                       # single write → fails atomically if at all
+    except UnicodeEncodeError:            # narrow consoles (e.g. Windows cp1252)
+        print(line.encode("ascii", "ignore").decode().strip())
     return 0 if passed else 1
 
 

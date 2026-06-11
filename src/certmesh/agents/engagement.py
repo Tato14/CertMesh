@@ -43,6 +43,7 @@ class EngagementAgent:
         # when the meeting load is heavy.
         constrained = sig.meeting_hours_per_week >= 22 or focus < 6.0
         day_order = ["Tue", "Thu", "Mon", "Wed", "Fri"] if constrained else _WEEKDAYS[:5]
+        win_start, win_end = (window.split("–") + [""])[:2]
         windows: list[StudyWindow] = []
         for i in range(n_sessions):
             day = day_order[i % len(day_order)]
@@ -50,7 +51,7 @@ class EngagementAgent:
                 f"{slot.replace('_', ' ')} slot; fits around ~{sig.meeting_hours_per_week:.0f}h/week of meetings"
             )
             windows.append(StudyWindow(day=day, slot=window, minutes=_SESSION_MINUTES,
-                                       rationale=rationale))
+                                       rationale=rationale, start=win_start, end=win_end))
 
         next_day = windows[0].day if windows else "Mon"
         next_reminder = t("reminder.next", ctx.language, day=next_day, time=start_time,
