@@ -1,0 +1,1001 @@
+{
+  "_meta": {
+    "synthetic": true,
+    "notice": "SYNTHETIC demonstration data only. Weekly progress snapshots for fabricated learner ids (L-1xxx); generated deterministically from data/learners.json so the final week matches each learner's practice_score_avg and hours_studied. Not real telemetry.",
+    "schema": "learner_id -> {certification, track, team, weeks[{week, practice_score, hours_studied_cumulative, milestones_completed}]}",
+    "weeks": 8,
+    "total_milestones": 6
+  },
+  "records": {
+    "L-1001": {
+      "certification": "AZ-204",
+      "track": "technical",
+      "team": "TEAM-A",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.52,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.56,
+          "hours_studied_cumulative": 4.5,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.61,
+          "hours_studied_cumulative": 9.9,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.66,
+          "hours_studied_cumulative": 15.9,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.7,
+          "hours_studied_cumulative": 22.1,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.73,
+          "hours_studied_cumulative": 28.5,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.75,
+          "hours_studied_cumulative": 35.2,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.78,
+          "hours_studied_cumulative": 42,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1002": {
+      "certification": "AZ-204",
+      "track": "technical",
+      "team": "TEAM-A",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.35,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.43,
+          "hours_studied_cumulative": 3.0,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.45,
+          "hours_studied_cumulative": 6.6,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.52,
+          "hours_studied_cumulative": 10.6,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.53,
+          "hours_studied_cumulative": 14.7,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.58,
+          "hours_studied_cumulative": 19.0,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.62,
+          "hours_studied_cumulative": 23.5,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.62,
+          "hours_studied_cumulative": 28,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1003": {
+      "certification": "AZ-400",
+      "track": "technical",
+      "team": "TEAM-A",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.43,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.5,
+          "hours_studied_cumulative": 5.3,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.55,
+          "hours_studied_cumulative": 11.8,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.59,
+          "hours_studied_cumulative": 18.9,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.62,
+          "hours_studied_cumulative": 26.3,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.69,
+          "hours_studied_cumulative": 34.0,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.71,
+          "hours_studied_cumulative": 41.9,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.71,
+          "hours_studied_cumulative": 50,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1004": {
+      "certification": "AZ-400",
+      "track": "technical",
+      "team": "TEAM-A",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.26,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.32,
+          "hours_studied_cumulative": 2.3,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.39,
+          "hours_studied_cumulative": 5.2,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.45,
+          "hours_studied_cumulative": 8.3,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.46,
+          "hours_studied_cumulative": 11.6,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.5,
+          "hours_studied_cumulative": 14.9,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.54,
+          "hours_studied_cumulative": 18.4,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.55,
+          "hours_studied_cumulative": 22,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1005": {
+      "certification": "AZ-204",
+      "track": "technical",
+      "team": "TEAM-A",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.53,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.59,
+          "hours_studied_cumulative": 6.2,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.67,
+          "hours_studied_cumulative": 13.7,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.71,
+          "hours_studied_cumulative": 21.9,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.74,
+          "hours_studied_cumulative": 30.5,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.8,
+          "hours_studied_cumulative": 39.4,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.81,
+          "hours_studied_cumulative": 48.6,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.83,
+          "hours_studied_cumulative": 58,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1006": {
+      "certification": "DP-203",
+      "track": "technical",
+      "team": "TEAM-B",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.33,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.35,
+          "hours_studied_cumulative": 1.9,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.38,
+          "hours_studied_cumulative": 4.3,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.4,
+          "hours_studied_cumulative": 6.8,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.43,
+          "hours_studied_cumulative": 9.5,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.44,
+          "hours_studied_cumulative": 12.2,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.46,
+          "hours_studied_cumulative": 15.1,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.48,
+          "hours_studied_cumulative": 18,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1007": {
+      "certification": "DP-203",
+      "track": "technical",
+      "team": "TEAM-B",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.36,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.41,
+          "hours_studied_cumulative": 2.6,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.42,
+          "hours_studied_cumulative": 5.7,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.46,
+          "hours_studied_cumulative": 9.1,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.46,
+          "hours_studied_cumulative": 12.6,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.5,
+          "hours_studied_cumulative": 16.3,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.53,
+          "hours_studied_cumulative": 20.1,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.52,
+          "hours_studied_cumulative": 24,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1008": {
+      "certification": "DP-203",
+      "track": "technical",
+      "team": "TEAM-B",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.28,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.33,
+          "hours_studied_cumulative": 1.6,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.35,
+          "hours_studied_cumulative": 3.6,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.37,
+          "hours_studied_cumulative": 5.7,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.39,
+          "hours_studied_cumulative": 7.9,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.44,
+          "hours_studied_cumulative": 10.2,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.45,
+          "hours_studied_cumulative": 12.6,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.45,
+          "hours_studied_cumulative": 15,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1009": {
+      "certification": "HL7-FHIR-1",
+      "track": "technical",
+      "team": "TEAM-B",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.51,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.55,
+          "hours_studied_cumulative": 3.2,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.59,
+          "hours_studied_cumulative": 7.1,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.63,
+          "hours_studied_cumulative": 11.3,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.63,
+          "hours_studied_cumulative": 15.8,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.66,
+          "hours_studied_cumulative": 20.4,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.68,
+          "hours_studied_cumulative": 25.1,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.69,
+          "hours_studied_cumulative": 30,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1010": {
+      "certification": "CLIN-SAFE-1",
+      "track": "clinical",
+      "team": "TEAM-C",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.48,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.52,
+          "hours_studied_cumulative": 2.1,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.57,
+          "hours_studied_cumulative": 4.7,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.62,
+          "hours_studied_cumulative": 7.5,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.66,
+          "hours_studied_cumulative": 10.5,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.69,
+          "hours_studied_cumulative": 13.6,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.71,
+          "hours_studied_cumulative": 16.8,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.74,
+          "hours_studied_cumulative": 20,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1011": {
+      "certification": "TELEHEALTH-1",
+      "track": "clinical",
+      "team": "TEAM-C",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.53,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.61,
+          "hours_studied_cumulative": 1.7,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.63,
+          "hours_studied_cumulative": 3.8,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.7,
+          "hours_studied_cumulative": 6.0,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.71,
+          "hours_studied_cumulative": 8.4,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.76,
+          "hours_studied_cumulative": 10.9,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.8,
+          "hours_studied_cumulative": 13.4,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.8,
+          "hours_studied_cumulative": 16,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1012": {
+      "certification": "CLIN-SAFE-2",
+      "track": "clinical",
+      "team": "TEAM-C",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.38,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.45,
+          "hours_studied_cumulative": 2.8,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.5,
+          "hours_studied_cumulative": 6.2,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.54,
+          "hours_studied_cumulative": 9.8,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.57,
+          "hours_studied_cumulative": 13.7,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.64,
+          "hours_studied_cumulative": 17.7,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.66,
+          "hours_studied_cumulative": 21.8,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.66,
+          "hours_studied_cumulative": 26,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1013": {
+      "certification": "CLIN-SAFE-1",
+      "track": "clinical",
+      "team": "TEAM-C",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.48,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.54,
+          "hours_studied_cumulative": 2.3,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.61,
+          "hours_studied_cumulative": 5.2,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.67,
+          "hours_studied_cumulative": 8.3,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.68,
+          "hours_studied_cumulative": 11.6,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.72,
+          "hours_studied_cumulative": 14.9,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.76,
+          "hours_studied_cumulative": 18.4,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.77,
+          "hours_studied_cumulative": 22,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1014": {
+      "certification": "TELEHEALTH-1",
+      "track": "clinical",
+      "team": "TEAM-C",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.41,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.47,
+          "hours_studied_cumulative": 1.5,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.55,
+          "hours_studied_cumulative": 3.3,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.59,
+          "hours_studied_cumulative": 5.3,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.62,
+          "hours_studied_cumulative": 7.4,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.68,
+          "hours_studied_cumulative": 9.5,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.69,
+          "hours_studied_cumulative": 11.7,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.71,
+          "hours_studied_cumulative": 14,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1015": {
+      "certification": "GDPR-HC-2",
+      "track": "compliance",
+      "team": "TEAM-D",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.43,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.45,
+          "hours_studied_cumulative": 2.0,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.48,
+          "hours_studied_cumulative": 4.5,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.5,
+          "hours_studied_cumulative": 7.2,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.53,
+          "hours_studied_cumulative": 10.0,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.54,
+          "hours_studied_cumulative": 12.9,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.56,
+          "hours_studied_cumulative": 15.9,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.58,
+          "hours_studied_cumulative": 19,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1016": {
+      "certification": "GDPR-HC-2",
+      "track": "compliance",
+      "team": "TEAM-D",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.47,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.52,
+          "hours_studied_cumulative": 2.2,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.53,
+          "hours_studied_cumulative": 5.0,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.57,
+          "hours_studied_cumulative": 7.9,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.57,
+          "hours_studied_cumulative": 11.0,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.61,
+          "hours_studied_cumulative": 14.3,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.64,
+          "hours_studied_cumulative": 17.6,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.63,
+          "hours_studied_cumulative": 21,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1017": {
+      "certification": "GDPR-HC-2",
+      "track": "compliance",
+      "team": "TEAM-D",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.62,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.67,
+          "hours_studied_cumulative": 3.0,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.69,
+          "hours_studied_cumulative": 6.6,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.71,
+          "hours_studied_cumulative": 10.6,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.73,
+          "hours_studied_cumulative": 14.7,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.78,
+          "hours_studied_cumulative": 19.0,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.79,
+          "hours_studied_cumulative": 23.5,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.79,
+          "hours_studied_cumulative": 28,
+          "milestones_completed": 6
+        }
+      ]
+    },
+    "L-1018": {
+      "certification": "GDPR-HC-2",
+      "track": "compliance",
+      "team": "TEAM-A",
+      "weeks": [
+        {
+          "week": 1,
+          "practice_score": 0.42,
+          "hours_studied_cumulative": 0.0,
+          "milestones_completed": 0
+        },
+        {
+          "week": 2,
+          "practice_score": 0.46,
+          "hours_studied_cumulative": 2.1,
+          "milestones_completed": 1
+        },
+        {
+          "week": 3,
+          "practice_score": 0.5,
+          "hours_studied_cumulative": 4.7,
+          "milestones_completed": 2
+        },
+        {
+          "week": 4,
+          "practice_score": 0.54,
+          "hours_studied_cumulative": 7.5,
+          "milestones_completed": 3
+        },
+        {
+          "week": 5,
+          "practice_score": 0.54,
+          "hours_studied_cumulative": 10.5,
+          "milestones_completed": 3
+        },
+        {
+          "week": 6,
+          "practice_score": 0.57,
+          "hours_studied_cumulative": 13.6,
+          "milestones_completed": 4
+        },
+        {
+          "week": 7,
+          "practice_score": 0.59,
+          "hours_studied_cumulative": 16.8,
+          "milestones_completed": 5
+        },
+        {
+          "week": 8,
+          "practice_score": 0.6,
+          "hours_studied_cumulative": 20,
+          "milestones_completed": 6
+        }
+      ]
+    }
+  }
+}

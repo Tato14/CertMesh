@@ -1,7 +1,7 @@
 {
   "_meta": {
     "synthetic": true,
-    "notice": "SYNTHETIC certification ontology for demonstration. Real Microsoft exam codes (AZ-204, AZ-400, DP-203, AZ-900) are referenced for realism; the internal certs (CLIN-SAFE-*, GDPR-HC-2, TELEHEALTH-1, HL7-FHIR-1) are FICTIONAL. Skill lists, recommended hours and thresholds are illustrative, not official Microsoft exam data. This file is the seed for the Fabric IQ semantic layer (entities + relationships).",
+    "notice": "SYNTHETIC certification ontology for demonstration. Real Microsoft exam codes (AZ-*, AI-*, DP-*, SC-*, PL-*, MS-*, MD-*) are referenced for realism; the internal certs (CLIN-SAFE-*, GDPR-HC-2, TELEHEALTH-1, HL7-FHIR-1, MEDDEV-AI-1, HC-ANALYTICS-1, EHR-DATA-1, CYBER-HC-1) are FICTIONAL. Skill lists, recommended hours and thresholds are illustrative, not official Microsoft exam data. This file is the seed for the Fabric IQ semantic layer (entities + relationships).",
     "entities": ["certification", "skill", "role", "track"],
     "relationships": ["prerequisite_of", "required_for_role", "covers_skill"]
   },
@@ -86,6 +86,204 @@
       "pass_threshold": 0.80,
       "prerequisites": [],
       "skills": ["Lawful basis for health data", "DPIA for clinical systems", "Subject access requests", "Breach handling", "Special category data"]
+    },
+    "AI-900": {
+      "title": "Microsoft Azure AI Fundamentals",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 20,
+      "pass_threshold": 0.70,
+      "prerequisites": [],
+      "skills": ["AI workloads and considerations", "Machine learning principles", "Computer vision workloads", "Natural language processing workloads"]
+    },
+    "DP-900": {
+      "title": "Microsoft Azure Data Fundamentals",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 20,
+      "pass_threshold": 0.70,
+      "prerequisites": [],
+      "skills": ["Core data concepts", "Relational data on Azure", "Non-relational data on Azure", "Analytics workloads on Azure"]
+    },
+    "SC-900": {
+      "title": "Microsoft Security, Compliance, and Identity Fundamentals",
+      "track": "security",
+      "real_exam": true,
+      "recommended_hours": 20,
+      "pass_threshold": 0.70,
+      "prerequisites": [],
+      "skills": ["Zero Trust concepts", "Microsoft Entra ID basics", "Microsoft security solutions", "Compliance management basics"]
+    },
+    "PL-900": {
+      "title": "Microsoft Power Platform Fundamentals",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 20,
+      "pass_threshold": 0.70,
+      "prerequisites": [],
+      "skills": ["Power Platform value", "Power BI basics", "Power Apps basics", "Power Automate basics"]
+    },
+    "MS-900": {
+      "title": "Microsoft 365 Fundamentals",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 15,
+      "pass_threshold": 0.70,
+      "prerequisites": [],
+      "skills": ["Microsoft 365 services", "Collaboration with Microsoft Teams", "Microsoft 365 security basics", "Licensing and support models"]
+    },
+    "AZ-104": {
+      "title": "Microsoft Azure Administrator",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 55,
+      "pass_threshold": 0.70,
+      "prerequisites": ["AZ-900"],
+      "skills": ["Identities and governance", "Virtual networking", "Compute resource management", "Storage account management", "Monitoring and backup"]
+    },
+    "AZ-500": {
+      "title": "Microsoft Azure Security Engineer Associate",
+      "track": "security",
+      "real_exam": true,
+      "recommended_hours": 60,
+      "pass_threshold": 0.70,
+      "prerequisites": ["AZ-104"],
+      "skills": ["Identity and access security", "Platform protection", "Security operations in Azure", "Data and application security"]
+    },
+    "AZ-305": {
+      "title": "Designing Microsoft Azure Infrastructure Solutions",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 75,
+      "pass_threshold": 0.70,
+      "prerequisites": ["AZ-104"],
+      "skills": ["Identity and governance design", "Data storage solution design", "Business continuity design", "Infrastructure solution design"]
+    },
+    "AZ-140": {
+      "title": "Configuring and Operating Microsoft Azure Virtual Desktop",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 35,
+      "pass_threshold": 0.70,
+      "prerequisites": ["AZ-104"],
+      "skills": ["Virtual desktop architecture planning", "Session host management", "User environment management", "Virtual desktop monitoring"]
+    },
+    "AI-102": {
+      "title": "Designing and Implementing a Microsoft Azure AI Solution",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 50,
+      "pass_threshold": 0.70,
+      "prerequisites": ["AI-900"],
+      "skills": ["Azure AI service provisioning", "Conversational AI solutions", "Document intelligence solutions", "Generative AI with Azure OpenAI"]
+    },
+    "DP-100": {
+      "title": "Designing and Implementing a Data Science Solution on Azure",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 60,
+      "pass_threshold": 0.70,
+      "prerequisites": ["DP-900"],
+      "skills": ["Machine learning workspace design", "Model training with Azure ML", "Model deployment and endpoints", "Responsible machine learning operations"]
+    },
+    "DP-600": {
+      "title": "Implementing Analytics Solutions Using Microsoft Fabric",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 50,
+      "pass_threshold": 0.70,
+      "prerequisites": ["DP-900"],
+      "skills": ["Fabric lakehouse design", "Semantic model development", "DAX analysis patterns", "Fabric deployment and governance"]
+    },
+    "PL-300": {
+      "title": "Microsoft Power BI Data Analyst",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 45,
+      "pass_threshold": 0.70,
+      "prerequisites": ["PL-900"],
+      "skills": ["Data preparation with Power Query", "Data modeling in Power BI", "Report design and visuals", "Workspace sharing and security"]
+    },
+    "SC-200": {
+      "title": "Microsoft Security Operations Analyst",
+      "track": "security",
+      "real_exam": true,
+      "recommended_hours": 50,
+      "pass_threshold": 0.70,
+      "prerequisites": ["SC-900"],
+      "skills": ["Threat detection with Defender XDR", "Microsoft Sentinel operations", "KQL hunting queries", "Incident response process"]
+    },
+    "SC-300": {
+      "title": "Microsoft Identity and Access Administrator",
+      "track": "security",
+      "real_exam": true,
+      "recommended_hours": 45,
+      "pass_threshold": 0.70,
+      "prerequisites": ["SC-900"],
+      "skills": ["Identity lifecycle management", "Conditional Access policies", "Privileged identity management", "Application access management"]
+    },
+    "SC-100": {
+      "title": "Microsoft Cybersecurity Architect",
+      "track": "security",
+      "real_exam": true,
+      "recommended_hours": 70,
+      "pass_threshold": 0.70,
+      "prerequisites": ["SC-200"],
+      "skills": ["Zero Trust architecture design", "Security posture evaluation", "Hybrid security strategy", "Data security strategy"]
+    },
+    "MS-102": {
+      "title": "Microsoft 365 Administrator",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 55,
+      "pass_threshold": 0.70,
+      "prerequisites": ["MS-900"],
+      "skills": ["Microsoft 365 tenant management", "Identity synchronization", "Threat protection for Microsoft 365", "Compliance solution deployment"]
+    },
+    "MD-102": {
+      "title": "Microsoft Endpoint Administrator",
+      "track": "technical",
+      "real_exam": true,
+      "recommended_hours": 45,
+      "pass_threshold": 0.70,
+      "prerequisites": ["MS-900"],
+      "skills": ["Device enrolment with Intune", "Configuration profile management", "Application lifecycle deployment", "Endpoint protection policies"]
+    },
+    "MEDDEV-AI-1": {
+      "title": "Responsible AI for Medical Devices (internal)",
+      "track": "compliance",
+      "real_exam": false,
+      "recommended_hours": 30,
+      "pass_threshold": 0.80,
+      "prerequisites": ["AI-900"],
+      "skills": ["AI risk classification for devices", "Clinical validation of AI models", "AI transparency documentation", "Post-market AI monitoring"]
+    },
+    "HC-ANALYTICS-1": {
+      "title": "Healthcare Analytics Foundations (internal)",
+      "track": "technical",
+      "real_exam": false,
+      "recommended_hours": 25,
+      "pass_threshold": 0.75,
+      "prerequisites": ["DP-900"],
+      "skills": ["Health data sources", "Clinical quality indicators", "Patient flow analytics", "Privacy-aware reporting"]
+    },
+    "EHR-DATA-1": {
+      "title": "EHR Data Integration (internal)",
+      "track": "technical",
+      "real_exam": false,
+      "recommended_hours": 30,
+      "pass_threshold": 0.75,
+      "prerequisites": ["HL7-FHIR-1"],
+      "skills": ["EHR integration patterns", "Clinical data mapping", "Message queue reliability", "Integration testing and go-live"]
+    },
+    "CYBER-HC-1": {
+      "title": "Healthcare Cybersecurity Essentials (internal)",
+      "track": "security",
+      "real_exam": false,
+      "recommended_hours": 25,
+      "pass_threshold": 0.75,
+      "prerequisites": ["SC-900"],
+      "skills": ["Medical device network security", "Ransomware resilience in hospitals", "Access control for clinical systems", "Security incident drills"]
     }
   },
   "roles": {
@@ -97,6 +295,18 @@
     "Telehealth Coordinator": { "track": "clinical", "required_certs": ["TELEHEALTH-1"] },
     "Clinical Safety Officer": { "track": "clinical", "required_certs": ["CLIN-SAFE-1", "CLIN-SAFE-2"] },
     "Privacy & Compliance Analyst": { "track": "compliance", "required_certs": ["GDPR-HC-2"] },
-    "Information Governance Lead": { "track": "compliance", "required_certs": ["GDPR-HC-2", "CLIN-SAFE-1"] }
+    "Information Governance Lead": { "track": "compliance", "required_certs": ["GDPR-HC-2", "CLIN-SAFE-1"] },
+    "Azure Administrator": { "track": "technical", "required_certs": ["AZ-900", "AZ-104"] },
+    "Solutions Architect": { "track": "technical", "required_certs": ["AZ-104", "AZ-305"] },
+    "AI Engineer": { "track": "technical", "required_certs": ["AI-900", "AI-102"] },
+    "Clinical AI Specialist": { "track": "clinical", "required_certs": ["AI-102", "MEDDEV-AI-1"] },
+    "Data Scientist": { "track": "technical", "required_certs": ["DP-900", "DP-100"] },
+    "Analytics Engineer": { "track": "technical", "required_certs": ["DP-600", "PL-300"] },
+    "Security Operations Analyst": { "track": "security", "required_certs": ["SC-900", "SC-200"] },
+    "Security Architect": { "track": "security", "required_certs": ["AZ-500", "SC-100"] },
+    "Identity Administrator": { "track": "security", "required_certs": ["SC-900", "SC-300"] },
+    "Modern Workplace Administrator": { "track": "technical", "required_certs": ["MS-900", "MS-102", "MD-102"] },
+    "Health Data Steward": { "track": "compliance", "required_certs": ["HC-ANALYTICS-1", "GDPR-HC-2"] },
+    "Interoperability Architect": { "track": "technical", "required_certs": ["HL7-FHIR-1", "EHR-DATA-1"] }
   }
 }

@@ -195,6 +195,8 @@ class StudyWindow(BaseModel):
     slot: str                         # e.g. "08:00–08:45"
     minutes: int = 45
     rationale: str = ""
+    start: str = ""                   # concrete "HH:MM" (additive; calendar view)
+    end: str = ""                     # concrete "HH:MM" (additive; calendar view)
 
 
 class EngagementPlan(BaseModel):

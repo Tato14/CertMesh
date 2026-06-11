@@ -36,9 +36,9 @@ cited, with a fully inspectable reasoning trace.
 | Weight | Criterion | Where it lives |
 |---|---|---|
 | 25% | **Accuracy & Relevance** | Citation grounding enforced at 1.0; capacity-respecting plans; thresholded readiness. ([evals](evals/), [iq-layers](docs/iq-layers.md)) |
-| 25% | **Reasoning & multi-step** | Planner–executor + 5 specialists + critic self-reflection loop, exposed as `orchestration_trace`. ([orchestration](docs/orchestration.md)) |
-| 15% | **Creativity & originality** | Healthcare-org scenario, manager-readiness view, critic grounding loop, real Microsoft Learn MCP content. |
-| 15% | **UX & presentation** | One-page learner + manager dashboard with a live trace panel and clickable citations. ([app](app/)) |
+| 25% | **Reasoning & multi-step** | Planner–executor + 5 specialists + critic self-reflection loop — replayed live in the dashboard as an **animated agent flow** with visible loop-back edges on every critic-forced revision. ([orchestration](docs/orchestration.md)) |
+| 15% | **Creativity & originality** | Healthcare-org scenario, interactive Fabric IQ knowledge graph, simulated capacity calendar with .ics export, critic grounding loop, real Microsoft Learn MCP content. |
+| 15% | **UX & presentation** | A six-view dashboard (Learner · Graph · Calendar · Assessment · Manager · persistent Trace panel): dark design system, scenario cards, role-path graph highlighting, exam mode with live scoring, teams×tracks heatmap with designed k-anonymity suppression, skeleton/empty/abstain states, `prefers-reduced-motion` support — zero-build, served by `make run`. ([app](app/)) |
 | 20% | **Reliability & safety** | Grounding guard, PII + k-anonymity guard, abstain/clarify, CI eval gates. ([responsible-ai](docs/responsible-ai.md)) |
 
 ## 30-second quickstart
@@ -51,7 +51,7 @@ python -m pip install -e ".[dev,i18n]"
 make run            # or:  PYTHONPATH=src uvicorn app.api:app --reload --port 8000
 
 # 3) tests + the evaluation scorecard (the CI gate)
-make test           # 38 tests
+make test           # 51 tests (incl. graph/calendar/progress API + PII suppression)
 make eval           # prints the scorecard below
 ```
 
@@ -59,8 +59,42 @@ PowerShell (Windows): `make` may be absent — use the explicit commands, e.g.
 `$env:PYTHONPATH="src"; uvicorn app.api:app --reload --port 8000` and
 `$env:PYTHONPATH="src"; python -m evals.run_evals`.
 
-Open the dashboard and click a preset: **AZ-204 learner**, **Over-capacity
-clinician (L-1012)**, **Manager view**, **Out-of-corpus (AWS)**, **Catalan input**.
+Open the dashboard and click a scenario card: **AZ-204 learner**, **Over-capacity
+clinician (L-1012)**, **Manager view**, **Out-of-corpus (AWS)**, **Catalan input**,
+**Role path: DevOps Engineer** (knowledge graph) or **Calendar contrast: L-1012 vs
+L-1005** (capacity calendar). Each card says what to watch for.
+
+## The dashboard
+
+Six views, zero build step — static HTML/CSS/ES-modules served by the same
+FastAPI app, in a light, training-oriented design system (Microsoft-inspired
+palette). Demo scenario cards sit in a collapsible strip available on every tab.
+
+- **Graph (the main view)** — the full learning ecosystem as an interactive
+  Cytoscape graph over the Fabric IQ ontology: **31 certifications** (the major
+  Microsoft AZ/AI/DP/SC/PL/MS/MD exams plus fictional internal ones) and **21
+  roles**. Explore by track (technical/clinical/compliance/security), toggle the
+  ~130 skills, pick a role to light up its certification path in prerequisite
+  order, overlay a learner's completed/in-progress/at-risk states, and click any
+  cert to launch a real agent run. Internal (fictional) certs render dashed.
+- **Learner** — request form; results stream in agent order with grounded
+  citation chips, a compact capacity week and a progress chart.
+- **Calendar** — a *simulated* Outlook-style week per learner: meetings (muted),
+  focus time (green), the Engagement Agent's proposed study slots (accented, with
+  why-this-slot tooltips) and a `[SYNTHETIC DEMO]` .ics export.
+- **Assessment** — exam mode: one question at a time, live score gauge against the
+  Fabric IQ pass threshold, per-question citations; failing routes you back into
+  the preparation loop.
+- **Manager** — teams × tracks readiness heatmap with k-anonymity-suppressed cells
+  rendered honestly (🔒 n < 3), severity risk cards, aggregate team trend.
+- **Orchestration trace** (collapsible side panel; unfolds automatically when
+  agents run) — the multi-agent run as an animated flow; critic-forced revisions
+  draw a visible loop-back arc, and every node opens a detail view with inputs,
+  outputs, verdicts and timings.
+
+<!-- screenshots: docs/img/learner.png · docs/img/graph.png · docs/img/calendar.png
+     docs/img/assessment.png · docs/img/manager.png · docs/img/trace.png -->
+*(screenshot placeholders — capture each tab at 1440×900 before submission)*
 
 ## The multi-agent system
 

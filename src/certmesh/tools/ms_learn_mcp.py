@@ -61,6 +61,132 @@ _OFFLINE_CACHE: dict[str, list[dict]] = {
                  "knowledge of cloud concepts and Microsoft Azure services, workloads, security, "
                  "privacy, pricing, and support."),
     }],
+    "AZ-104": [{
+        "title": "Microsoft Certified: Azure Administrator Associate (AZ-104)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/azure-administrator/",
+        "text": ("The Azure Administrator Associate certification (exam AZ-104) validates the "
+                 "skills to implement, manage, and monitor an organization's Azure environment, "
+                 "including identities, governance, storage, compute, and virtual networks."),
+    }],
+    "AZ-305": [{
+        "title": "Microsoft Certified: Azure Solutions Architect Expert (AZ-305)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/azure-solutions-architect/",
+        "text": ("The Azure Solutions Architect Expert certification (exam AZ-305) validates the "
+                 "skills to design cloud and hybrid solutions that run on Azure, including "
+                 "compute, network, storage, monitoring, and security."),
+    }],
+    "AZ-500": [{
+        "title": "Microsoft Certified: Azure Security Engineer Associate (AZ-500)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/azure-security-engineer/",
+        "text": ("The Azure Security Engineer Associate certification (exam AZ-500) validates the "
+                 "skills to implement, manage, and monitor security for resources in Azure, "
+                 "multicloud, and hybrid environments."),
+    }],
+    "AZ-140": [{
+        "title": "Microsoft Certified: Azure Virtual Desktop Specialty (AZ-140)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/azure-virtual-desktop-specialty/",
+        "text": ("The Azure Virtual Desktop Specialty certification (exam AZ-140) validates the "
+                 "skills to plan, deliver, manage, and monitor virtual desktop experiences and "
+                 "remote apps on Microsoft Azure."),
+    }],
+    "AI-900": [{
+        "title": "Microsoft Certified: Azure AI Fundamentals (AI-900)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-fundamentals/",
+        "text": ("The Azure AI Fundamentals certification (exam AI-900) validates foundational "
+                 "knowledge of machine learning and AI concepts and related Microsoft Azure "
+                 "services."),
+    }],
+    "AI-102": [{
+        "title": "Microsoft Certified: Azure AI Engineer Associate (AI-102)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-engineer/",
+        "text": ("The Azure AI Engineer Associate certification (exam AI-102) validates the "
+                 "skills to build, manage, and deploy AI solutions that leverage Azure AI "
+                 "services, including natural language processing, computer vision, and "
+                 "generative AI."),
+    }],
+    "DP-900": [{
+        "title": "Microsoft Certified: Azure Data Fundamentals (DP-900)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/azure-data-fundamentals/",
+        "text": ("The Azure Data Fundamentals certification (exam DP-900) validates foundational "
+                 "knowledge of core data concepts and how they are implemented using Microsoft "
+                 "Azure data services."),
+    }],
+    "DP-100": [{
+        "title": "Microsoft Certified: Azure Data Scientist Associate (DP-100)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/azure-data-scientist/",
+        "text": ("The Azure Data Scientist Associate certification (exam DP-100) validates the "
+                 "skills to run machine learning workloads on Azure, including training, "
+                 "deploying, and managing models with Azure Machine Learning."),
+    }],
+    "DP-600": [{
+        "title": "Microsoft Certified: Fabric Analytics Engineer Associate (DP-600)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/fabric-analytics-engineer-associate/",
+        "text": ("The Fabric Analytics Engineer Associate certification (exam DP-600) validates "
+                 "the skills to design, create, and deploy enterprise-scale analytics solutions "
+                 "using Microsoft Fabric, including lakehouses and semantic models."),
+    }],
+    "PL-900": [{
+        "title": "Microsoft Certified: Power Platform Fundamentals (PL-900)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/power-platform-fundamentals/",
+        "text": ("The Power Platform Fundamentals certification (exam PL-900) validates "
+                 "foundational knowledge of the business value and product capabilities of "
+                 "Microsoft Power Platform."),
+    }],
+    "PL-300": [{
+        "title": "Microsoft Certified: Power BI Data Analyst Associate (PL-300)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/data-analyst-associate/",
+        "text": ("The Power BI Data Analyst Associate certification (exam PL-300) validates the "
+                 "skills to prepare, model, visualize, and analyze data with Microsoft Power BI."),
+    }],
+    "SC-900": [{
+        "title": "Microsoft Certified: Security, Compliance, and Identity Fundamentals (SC-900)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/security-compliance-and-identity-fundamentals/",
+        "text": ("The Security, Compliance, and Identity Fundamentals certification (exam SC-900) "
+                 "validates foundational knowledge of security, compliance, and identity concepts "
+                 "across cloud-based Microsoft services."),
+    }],
+    "SC-200": [{
+        "title": "Microsoft Certified: Security Operations Analyst Associate (SC-200)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/security-operations-analyst/",
+        "text": ("The Security Operations Analyst Associate certification (exam SC-200) validates "
+                 "the skills to investigate, respond to, and hunt for threats using Microsoft "
+                 "Sentinel and Microsoft Defender XDR."),
+    }],
+    "SC-300": [{
+        "title": "Microsoft Certified: Identity and Access Administrator Associate (SC-300)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/identity-and-access-administrator/",
+        "text": ("The Identity and Access Administrator Associate certification (exam SC-300) "
+                 "validates the skills to design, implement, and operate identity and access "
+                 "management with Microsoft Entra ID."),
+    }],
+    "SC-100": [{
+        "title": "Microsoft Certified: Cybersecurity Architect Expert (SC-100)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/cybersecurity-architect-expert/",
+        "text": ("The Cybersecurity Architect Expert certification (exam SC-100) validates the "
+                 "skills to design and evolve an organization's cybersecurity strategy, including "
+                 "Zero Trust, security operations, and data protection."),
+    }],
+    "MS-900": [{
+        "title": "Microsoft Certified: Microsoft 365 Fundamentals (MS-900)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/microsoft-365-fundamentals/",
+        "text": ("The Microsoft 365 Fundamentals certification (exam MS-900) validates "
+                 "foundational knowledge of Microsoft 365 cloud services, security, compliance, "
+                 "pricing, and support concepts."),
+    }],
+    "MS-102": [{
+        "title": "Microsoft Certified: Microsoft 365 Administrator Expert (MS-102)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/m365-administrator-expert/",
+        "text": ("The Microsoft 365 Administrator Expert certification (exam MS-102) validates "
+                 "the skills to deploy and manage a Microsoft 365 tenant, including identity "
+                 "synchronization, security, and compliance."),
+    }],
+    "MD-102": [{
+        "title": "Microsoft Certified: Endpoint Administrator Associate (MD-102)",
+        "url": "https://learn.microsoft.com/en-us/credentials/certifications/endpoint-administrator/",
+        "text": ("The Endpoint Administrator Associate certification (exam MD-102) validates the "
+                 "skills to deploy, configure, protect, and manage devices and client "
+                 "applications with Microsoft Intune."),
+    }],
 }
 
 _LEARN_URL_RE = re.compile(r"https?://learn\.microsoft\.com/[^\s)\]\"']+")
