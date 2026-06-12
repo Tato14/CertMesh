@@ -31,3 +31,5 @@ evals/_foundry_eval_rows.jsonl
 # Editor / harness local settings
 .claude/settings.local.json
 .vscode/
+
+docs/video/
