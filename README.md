@@ -102,11 +102,21 @@ palette). Demo scenario cards sit in a collapsible strip available on every tab.
   with inputs, outputs, verdicts and timings. Foundry citation chips anywhere in
   the app open an **evidence inspector** with the verbatim source span highlighted.
 
-<!-- screenshots to capture at 1440×900 before submission, under docs/img/:
-     graph.png (role path lit) · learner.png (re-plan banner + what-if diff) ·
-     calendar.png (L-1012 vs L-1005) · assessment.png (gauge) ·
-     manager.png (locked cell) · quality.png (6 green gates + ablation) ·
-     trace.png (deliberation ledger open + revision loop-back) -->
+### Screenshots
+
+| The knowledge graph with a role path lit | The capacity-calendar contrast (L-1012 vs L-1005) |
+|---|---|
+| ![Knowledge graph — DevOps Engineer path highlighted in prerequisite order](docs/img/graph.png) | ![Capacity calendar — a wall of meetings vs a roomy week, study slots placed in focus time](docs/img/calendar.png) |
+
+| Exam mode: live gauge vs the pass threshold | The adaptive re-plan: exam mistakes front-loaded |
+|---|---|
+| ![Exam results — animated gauge against the Fabric IQ threshold, per-question citations](docs/img/assessment.png) | ![Study plan re-planned from exam mistakes — Priority review milestones + the what-if slider](docs/img/learner.png) |
+
+| The deliberation ledger in the trace | Manager view: k-anonymity as a designed state |
+|---|---|
+| ![Orchestration trace with the planner's deliberation ledger open — routes rejected, resolution sources](docs/img/trace.png) | ![Manager heatmap — suppressed cell rendered honestly, severity risk cards, aggregate trend](docs/img/manager.png) |
+
+![Quality tab — all 67 gold cases executed live, six hard gates green, critic-ablation evidence](docs/img/quality.png)
 
 ## The multi-agent system
 

@@ -11,7 +11,7 @@ Mapped to the contest requirements and the rubric.
 - [x] **Synthetic data + documents only; README states this** — fictional Northwind Health; fabricated ids; README + LICENSE notices.
 - [x] **Demo-able; explains agent interactions** — one-click presets + live orchestration trace panel. (`docs/demo-script.md`)
 - [x] **Docs for responsibilities, flow, tools, data** — `docs/agents.md`, `orchestration.md`, `iq-layers.md`, `architecture.md`.
-- [ ] **Public GitHub repo** — push the repo (run the secret scan first; see README).
+- [x] **Public GitHub repo** — <https://github.com/Tato14/CertMesh> (secret scan clean; `.env` untracked).
 - [x] **Architecture diagram** — `docs/architecture.md` (Mermaid), a required artifact.
 - [x] **Project description** — `README.md`.
 - [ ] **≤5-min original demo video uploaded to YouTube/Vimeo** — record using `docs/demo-script.md`; add the link to the README.
