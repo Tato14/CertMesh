@@ -137,6 +137,11 @@ _STRINGS: dict[str, dict[str, str]] = {
         "ca": "Aquesta certificació no és a la base de coneixement aprovada, així que no es pot generar un pla fonamentat. Trieu una certificació admesa o sol·liciteu revisió manual.",
         "es": "Esa certificación no está en la base de conocimiento aprobada, así que no se puede generar un plan fundamentado. Elija una certificación admitida o solicite revisión manual.",
     },
+    "abstain.policy": {
+        "en": "This request asks the assistant to ignore its rules or to expose individual records, so it was declined and flagged for review. No agents were run.",
+        "ca": "Aquesta petició demana a l'assistent que ignori les seves normes o que exposi registres individuals; s'ha rebutjat i marcat per a revisió. No s'ha executat cap agent.",
+        "es": "Esta petición pide al asistente ignorar sus normas o exponer registros individuales; se ha rechazado y marcado para revisión. No se ha ejecutado ningún agente.",
+    },
     "abstain.ambiguous": {
         "en": "The goal is ambiguous. Please tell me which certification you are targeting (e.g. AZ-204) or your role.",
         "ca": "L'objectiu és ambigu. Indiqueu quina certificació voleu obtenir (p. ex. AZ-204) o el vostre rol.",

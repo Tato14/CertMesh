@@ -9,9 +9,8 @@ import * as graph from "./graph.js";
 import * as calendar from "./calendar.js";
 import * as quiz from "./quiz.js";
 import * as manager from "./manager.js";
-import { $, esc } from "./util.js";
-
-const TABS = { learner, graph, calendar, assessment: quiz, manager };
+import * as quality from "./quality.js";
+import { $, esc, highlightSnippet } from "./util.js";
 
 /* ── tabs ───────────────────────────────────────────────────────────────── */
 
@@ -22,6 +21,43 @@ function switchTab(name) {
     v.classList.toggle("active", v.id === `view-${name}`));
   if (name === "graph") graph.activate();
   if (name === "calendar") calendar.activate();
+  if (name === "quality") quality.activate();
+}
+
+/* ── evidence inspector: Foundry IQ citation chips open the verbatim source ── */
+
+function closeEvidence() {
+  document.getElementById("source-pop")?.remove();
+}
+
+async function openEvidence(chipEl) {
+  closeEvidence();
+  const id = chipEl.dataset.sourceId;
+  const snippet = chipEl.dataset.snippet || "";
+  const pop = document.createElement("div");
+  pop.id = "source-pop";
+  pop.className = "source-pop";
+  pop.innerHTML = `<div class="spread"><b>Evidence inspector</b>
+      <button class="btn-ghost btn-sm" data-close>✕</button></div>
+    <div class="skeleton" style="height:60px;margin-top:8px"></div>`;
+  document.body.appendChild(pop);
+  pop.querySelector("[data-close]").addEventListener("click", closeEvidence);
+  try {
+    const src = await api.source(id);
+    pop.innerHTML = `<div class="spread"><b>Evidence inspector</b>
+        <button class="btn-ghost btn-sm" data-close>✕</button></div>
+      <div class="muted small mono" style="margin:4px 0 8px">${esc(src.locator)} · ${esc(src.source)}</div>
+      <div class="src-text">${highlightSnippet(src.text, snippet)}</div>
+      <p class="muted small" style="margin:8px 0 0">The <mark>highlighted</mark> span is the verbatim
+        slice the agent cited — the critic verified it is a substring of this retrieved source.
+        Synthetic corpus.</p>`;
+    pop.querySelector("[data-close]").addEventListener("click", closeEvidence);
+  } catch (e) {
+    pop.innerHTML = `<div class="spread"><b>Evidence inspector</b>
+      <button class="btn-ghost btn-sm" data-close>✕</button></div>
+      <p class="muted small">Source unavailable: ${esc(e.message)}</p>`;
+    pop.querySelector("[data-close]").addEventListener("click", closeEvidence);
+  }
 }
 
 /* ── request form ───────────────────────────────────────────────────────── */
@@ -48,8 +84,16 @@ function reqFromForm() {
 
 let running = false;
 
+function toast(msg) {
+  document.getElementById("app-toast")?.remove();
+  const el = document.createElement("div");
+  el.id = "app-toast"; el.className = "app-toast"; el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2200);
+}
+
 async function runRequest(req) {
-  if (running) return;
+  if (running) { toast("Agents are still running — one moment…"); return; }
   running = true;
   const btn = $("btn-run");
   btn.disabled = true; btn.textContent = "Agents running…";
@@ -150,6 +194,13 @@ function boot() {
   store.on("run-request", runRequest);
   store.on("switch-tab", switchTab);
   store.on("open-quiz", (mode) => { switchTab("assessment"); quiz.open(mode); });
+
+  // evidence inspector (delegated: chips are re-rendered constantly)
+  document.addEventListener("click", (e) => {
+    const chip = e.target.closest(".cite[data-source-id]");
+    if (chip) { e.preventDefault(); openEvidence(chip); return; }
+    if (!e.target.closest("#source-pop")) closeEvidence();
+  });
 
   loadPresets();
   loadHealth();

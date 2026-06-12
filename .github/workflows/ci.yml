@@ -36,5 +36,5 @@ jobs:
       - name: Tests
         run: python -m pytest -q
 
-      - name: Evaluation gate (grounding == 1.0, PII == 0, routing, capacity, abstention)
+      - name: Evaluation gate (grounding == 1.0, PII == 0, redteam == 1.0, routing, capacity, abstention)
         run: python -m evals.run_evals

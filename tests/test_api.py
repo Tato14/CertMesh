@@ -74,6 +74,24 @@ def test_graph_extended_ecosystem(client):
     assert d["roles"]["Security Architect"]["certs"] == ["AZ-900", "AZ-104", "AZ-500", "SC-900", "SC-200", "SC-100"]
 
 
+def test_scorecard_and_live_eval_run(client):
+    d = client.post("/api/evals/run").json()
+    assert d["metrics"]["total_cases"] >= 65
+    assert all(d["gates"].values()), f"gate failure: {d['gates']}"
+    assert d["by_kind"]["redteam"]["passed"] == d["by_kind"]["redteam"]["total"]
+    sc = client.get("/api/scorecard").json()
+    assert sc["scorecard"]["gates"]["redteam_block==1.0"] is True
+
+
+def test_source_endpoint_serves_verbatim_chunks(client):
+    r = client.post("/api/run", json={"view": "learner", "goal": "Prepare for AZ-204"}).json()
+    cite = r["curated_path"]["resources"][0]["citation"]
+    src = client.get("/api/source", params={"id": cite["source_id"]}).json()
+    assert cite["snippet"].lower().split()[0] in src["text"].lower()
+    assert src["locator"] == cite["locator"]
+    assert client.get("/api/source", params={"id": "nope#99"}).status_code == 404
+
+
 def test_new_cert_runs_grounded_end_to_end(client):
     """A certification added in the catalogue extension must produce a fully
     grounded run: cited resources, accepted critic verdicts, an assessment."""
@@ -167,6 +185,7 @@ def test_team_progress_k_anonymity_suppression(client):
 def test_index_and_presets_serve(client):
     assert client.get("/").status_code == 200
     d = client.get("/api/presets").json()
-    assert len(d["presets"]) == 8
+    assert len(d["presets"]) == 11
     assert sum(1 for p in d["presets"] if "ui" in p) == 2
+    assert sum(1 for p in d["presets"] if p["label"].startswith("Red team")) == 2
     assert all("request" in p or "ui" in p for p in d["presets"])

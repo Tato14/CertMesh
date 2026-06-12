@@ -18,6 +18,9 @@ test:           ## run the test suite
 eval:           ## print the evaluation scorecard (CI gate)
 	$(PY) -m evals.run_evals
 
+eval-ablation:  ## scorecard + critic ablation (proves the grounding gate is load-bearing)
+	$(PY) -m evals.run_evals --ablation
+
 foundry-eval:   ## run the managed Foundry evaluators (needs cloud + azure extra)
 	$(PY) -m evals.foundry_eval
 

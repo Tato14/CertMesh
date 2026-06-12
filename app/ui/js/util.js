@@ -28,9 +28,25 @@ export function citeCollector() {
     if (c.url) {
       return `<a class="${cls}" href="${esc(c.url)}" target="_blank" rel="noopener" title="${esc(tip)}">${inner} ↗</a>`;
     }
-    return `<span class="${cls}" title="${esc(tip)}">${inner}</span>`;
+    // Foundry IQ chips open the evidence inspector (verbatim source + highlight).
+    return `<button type="button" class="cite" data-source-id="${esc(c.source_id)}"
+      data-snippet="${esc(c.snippet)}" title="${esc(tip)}\n(click to inspect the verbatim source)">${inner} ⌕</button>`;
   }
   return { chip, list: () => cites };
+}
+
+/* Highlight `snippet` inside `text`, tolerant of whitespace/case differences —
+   the same normalisation the critic's supports() check applies. */
+export function highlightSnippet(text, snippet) {
+  if (!snippet) return esc(text);
+  const pattern = snippet.trim().split(/\s+/).map((w) =>
+    w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("\\s+");
+  try {
+    const m = text.match(new RegExp(pattern, "i"));
+    if (!m) return esc(text);
+    const start = m.index, end = m.index + m[0].length;
+    return `${esc(text.slice(0, start))}<mark>${esc(text.slice(start, end))}</mark>${esc(text.slice(end))}`;
+  } catch { return esc(text); }
 }
 
 export function sourcesCard(cites) {

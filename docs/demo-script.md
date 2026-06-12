@@ -38,26 +38,35 @@ preset card; each card states what to watch for.
   is — from aggregate Work IQ signals only. No meeting titles, no content, and the
   week is simulated, never a real tenant."*
 
-### 1:45–2:45 — Assessment: exam mode with live scoring  *(Relevance · UX 15%)*
+### 1:45–2:45 — Exam → ADAPTIVE re-plan (the loop is real)  *(Reasoning 25% · UX 15%)*
 - **Do:** On the Learner tab run **"Over-capacity clinician (L-1012)"** if not
   already, then click **"Take it as an exam →"**.
-- **Show:** questions one at a time, progress bar, no answers revealed until
-  submit. Answer a few wrong on purpose. Submit → the gauge animates to your score
-  against the **80% Fabric IQ threshold**; each question shows the explanation and
-  its **citation chip** (Microsoft Learn links are clickable).
-- **Do:** Click **"↻ Back into the preparation loop"** — a failed attempt re-runs
-  planning, closing the baseline loop on screen.
-- **Say:** *"Every question is grounded — the correct option is a verbatim slice of
-  the approved corpus, and the critic enforces that. Fail, and you're routed back
-  into preparation, not left with a score."*
+- **Show:** questions one at a time, no answers until submit. Answer 2-3 wrong on
+  purpose. Submit → the gauge animates against the **80% Fabric IQ threshold**;
+  every question carries its **citation chip** — click one: the **evidence
+  inspector** opens the source document with the verbatim cited span highlighted.
+- **Do:** Click **"↻ Re-plan around my N weak skills"** — your actual mistakes
+  feed back into the planner.
+- **Show:** the new plan opens with an amber **"Re-planned from your exam
+  mistakes"** banner, the failed skills as **Priority review** milestones at the
+  top with extra hours (same total), and the planner's reasoning saying so.
+- **Do:** Open the trace panel's **deliberation ledger** on THIS run — it now
+  contains *"original milestone order — rejected: exam feedback flags N weak
+  skill(s) to front-load"*: the planner visibly changed its mind from evidence.
+- **Do:** Drag the **What-if slider** under the plan card.
+- **Say:** *"And the plan re-solves live under a different weekly capacity —
+  14 weeks at 3 hours, 20 at 2, 7 at 6. Constraint propagation you can feel."*
 
 ### 2:45–4:00 — The trace: watch the agents think  *(Reasoning 25%)*
 - **Do:** Click preset **"AZ-204 learner (English)"** — the collapsible
   **Orchestration** panel unfolds automatically on the right as the run starts.
-- **Show:** the plan reasoning sentence at the top ("why these agents, in this
-  order"), then each node pulse through pending → running → ok. At the
-  **Assessment Agent**, the critic rejects the draft — the node flashes the revise
-  verdict and ends with a dashed **loop-back arc + "↻ revision ×1"** badge.
+- **Show:** the plan reasoning at the top, and open its **deliberation ledger** —
+  the routes the planner considered and REJECTED ("manager route — rejected",
+  "abstain (out-of-corpus) — rejected: AZ-204 is in the approved knowledge base")
+  plus which source actually resolved the certification, role and capacity. Then
+  each node pulses through pending → running → ok. At the **Assessment Agent**,
+  the critic rejects the draft — the node flashes the revise verdict and ends
+  with a dashed **loop-back arc + "↻ revision ×1"** badge.
 - **Do:** Click that node — the detail shows the exact rejected claim, the critic's
   note, both iterations with real timings, and the retrieved sources.
 - **Say:** *"This is the reflection loop, live: the agent synthesised a rationale
@@ -66,21 +75,22 @@ preset card; each card states what to watch for.
 - **Point at:** the closing **Critic / Verifier** node: claims grounded, revisions
   forced, PII findings 0.
 
-### 4:00–5:00 — Manager heatmap + the eval gate  *(Safety 20% · Accuracy 25%)*
-- **Do:** Click **"Manager view (all teams)"**.
-- **Show:** the teams × tracks readiness heatmap; the **TEAM-A · compliance** cell
-  renders **🔒 n < 3 suppressed** — k-anonymity as a designed state, not an
-  omission. Severity-coded risk cards; the team trend line (aggregate only); the
-  **PII-safe · aggregate only** badge.
-- **Do:** Cut to the terminal: `make eval`.
-- **Show:** **55 cases · citation grounding 100% (hard gate) · manager PII-leak 0
-  (hard gate) · routing 100% · abstention 100%**.
-- **Say:** *"Managers see readiness and risk, never people. The critic scans every
-  manager response for identifiers, and CI fails on a single leak. Grounding and
-  privacy aren't claims here — they're gates."*
-- **Optional 5s close:** click **"Out-of-corpus (AWS)"** → the designed
-  **Grounded abstain** state: *"outside the approved KB, it refuses and routes to a
-  human — safety as a feature."*
+### 4:00–5:00 — Attack it, then run the gates live  *(Safety 20% · Accuracy 25%)*
+- **Do:** Click **"Red team: prompt injection"** — an attack that even names a
+  valid cert (AZ-204).
+- **Show:** the planner refuses **by policy before any agent runs**; the
+  Orchestrator node lands abstained with the refusal reasoning.
+- **Do:** Click **"Red team: PII exfiltration"** (a manager demanding individual
+  scores) → the heatmap answers with aggregates, **TEAM-A · compliance** renders
+  **🔒 n < 3 suppressed**, and the Critic node reports **0 PII findings**.
+- **Do:** Open the **Quality tab** and click **"▶ Re-run 67 gold cases now"**.
+- **Show:** the suite executes in seconds, all **six gate chips** go green —
+  including **Adversarial block == 1.0** — and the **critic-ablation card**:
+  *without the critic, grounding drops to 91.3%; 100/100 fabricated citations
+  caught.*
+- **Say:** *"You just watched the system get attacked and refuse, and then watched
+  its own CI gate pass live. Grounding and privacy aren't claims in a README —
+  they're executable, and the ablation proves the gate is load-bearing."*
 
 ---
 
@@ -89,11 +99,13 @@ preset card; each card states what to watch for.
 |---|---|
 | Role path: DevOps Engineer | Fabric IQ graph, role path + learner overlay, graph→agents handoff |
 | Calendar contrast: L-1012 vs L-1005 | Work IQ capacity calendar, slot rationale, .ics export |
-| Over-capacity clinician (L-1012) | Capacity-aware plan + progress chart + mini-week |
-| AZ-204 learner (English) | Full fan-out, animated trace, reflection loop |
+| Over-capacity clinician (L-1012) | Capacity-aware plan → exam → **adaptive re-plan from real mistakes** |
+| What-if: L-1012 with 6 hours | Counterfactual constraint propagation (+ the live slider) |
+| AZ-204 learner (English) | Full fan-out, animated trace, deliberation ledger, reflection loop |
+| Red team: prompt injection / PII exfiltration | Policy refusal + aggregate-only defense, CI-gated |
 | Manager view (all teams) | Heatmap + k-anonymity suppression + risks + trend |
-| Out-of-corpus (AWS) | Designed grounded-abstain state |
-| Strong learner (L-1005) / Catalan input | Contrast schedule · language handling (if time allows) |
+| Quality tab (no preset) | 67 gold cases live, 6 gates, critic ablation |
+| Out-of-corpus (AWS) · Catalan input | Grounded abstain · language handling (if time allows) |
 
 ## Voiceover length check
 ~630 words of narration ≈ 4:50 at a natural pace, leaving buffer for clicks.

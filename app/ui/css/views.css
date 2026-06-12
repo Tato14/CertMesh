@@ -306,6 +306,61 @@ main { min-width: 0; }
   background: var(--bg2);
 }
 
+/* ── deliberation ledger (trace plan header) ────────────────────────────── */
+.ledger { margin-top: var(--s2); font-size: var(--fs-xs); }
+.ledger summary { cursor: pointer; color: var(--muted); font-weight: 600; user-select: none; }
+.ledger .alt { color: var(--muted); padding: 2px 0 2px 12px; }
+.ledger .src { padding: 2px 0 2px 12px; color: var(--ink-dim); }
+.ledger .src b { color: var(--accent-strong); font-weight: 600; margin-right: 4px; }
+
+/* ── adaptive re-plan ───────────────────────────────────────────────────── */
+.replan-banner {
+  background: var(--warn-soft); border: 1px solid var(--warn-line);
+  border-radius: var(--r-sm); padding: var(--s2) var(--s3); margin-bottom: var(--s3);
+  font-size: var(--fs-sm); color: var(--ink-dim);
+}
+tr.prio td { background: var(--warn-soft); }
+tr.prio td:first-child { border-left: 3px solid var(--warn); }
+
+/* ── what-if slider ─────────────────────────────────────────────────────── */
+#whatif-slider { accent-color: var(--accent); }
+#whatif-diff s { opacity: 0.7; }
+
+/* ── quality view ───────────────────────────────────────────────────────── */
+.gate-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: 999px; font-size: var(--fs-xs); font-weight: 650;
+}
+.gate-chip.pass { background: var(--good-soft); color: var(--good); border: 1px solid var(--good-line); }
+.gate-chip.fail { background: var(--bad-soft); color: var(--bad); border: 1px solid var(--bad-line); }
+.metric-row { display: grid; grid-template-columns: 220px 1fr 56px; gap: var(--s3); align-items: center; padding: 4px 0; }
+.metric-row .ml { font-size: var(--fs-sm); color: var(--ink-dim); }
+.metric-row .bar { height: 8px; border-radius: 4px; background: var(--bg3); overflow: hidden; }
+.metric-row .bar i { display: block; height: 100%; background: var(--accent); border-radius: 4px; transition: width var(--dur-slow) var(--ease); }
+.metric-row .mv { text-align: right; font-size: var(--fs-xs); color: var(--muted); }
+
+/* ── evidence inspector ─────────────────────────────────────────────────── */
+button.cite { cursor: pointer; }
+.source-pop {
+  position: fixed; right: 24px; bottom: 24px; z-index: 95;
+  width: min(480px, calc(100vw - 48px)); max-height: 60vh; overflow-y: auto;
+  background: var(--bg1); border: 1px solid var(--line-strong); border-radius: var(--r-lg);
+  box-shadow: var(--shadow-2); padding: var(--s4);
+  animation: fadeUp var(--dur-slow) var(--ease) both;
+}
+.source-pop .src-text {
+  background: var(--bg2); border: 1px solid var(--line); border-radius: var(--r-sm);
+  padding: var(--s3); font-size: var(--fs-sm); line-height: 1.6; color: var(--ink-dim);
+}
+.source-pop mark, #source-pop mark { background: rgba(29, 111, 208, 0.18); color: var(--accent-strong); border-radius: 3px; padding: 0 2px; font-weight: 600; }
+
+.app-toast {
+  position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%);
+  background: var(--ink); color: #fff; font-size: var(--fs-sm); font-weight: 550;
+  padding: 8px 16px; border-radius: 999px; box-shadow: var(--shadow-2); z-index: 99;
+  animation: fadeUp var(--dur-slow) var(--ease) both;
+}
+
 @media (max-width: 1320px) { .brand .tag { display: none; } }
 @media (max-width: 1100px) {
   .topbar { flex-wrap: wrap; row-gap: var(--s2); }

@@ -23,11 +23,32 @@ collaboration as an inspectable `OrchestrationTrace`.
 | Condition | Plan |
 |---|---|
 | `view == manager` | `[Manager Insights Agent]` |
+| learner view, goal matches an unsafe-request pattern (prompt injection, third-party record access) | **policy refusal** → abstain `policy` — short-circuits BEFORE routing, even when the goal names a valid certification. First-person goals about the learner's own id/scores are exempt. |
 | learner view, certification resolved (from field, learner record, goal text, or inferred from role) | `[Curator, Study Plan, Engagement, Assessment]` |
+| learner view, cert resolved AND `focus_skills` present (exam feedback) | same pipeline, but the Study Plan Generator **front-loads the weak skills with extra hours** (pool-conserving) and the plan reasoning says so — the adaptive re-plan |
 | learner view, no cert, goal names an out-of-corpus target (e.g. "AWS", a foreign exam code) | abstain → `unknown_cert` |
 | learner view, no cert and nothing specific | abstain → `ambiguous` (ask to clarify) |
 
-Routing accuracy is measured by the eval harness (`routing` + `language` cases).
+Routing accuracy is measured by the eval harness (`routing` + `language` cases);
+the policy refusal is gated by the `redteam` category (`redteam_block == 1.0`).
+
+## The deliberation ledger
+
+`PlanDecision` carries two additive fields the trace renders under the plan
+reasoning, so the routing decision is inspectable rather than narrated:
+
+- **`alternatives`** — the routes considered and REJECTED, with reasons
+  (e.g. `"manager route — rejected: view is 'learner'"`,
+  `"original milestone order — rejected: exam feedback flags 2 weak skill(s) to front-load"`).
+- **`resolution`** — which source actually won each input resolution:
+  `certification` (explicit field → learner record → goal text → role
+  requirement), `role`, and `capacity` (explicit what-if override vs the Work IQ
+  focus signal).
+
+Combined with the **what-if override** (`available_hours_per_week` re-solves the
+same request under a different capacity constraint — the dashboard exposes it as
+a live slider with a before/after diff), deliberation is both visible and
+manipulable.
 
 ## The reflection loop, concretely
 
@@ -65,11 +86,14 @@ Each `TraceStep` records:
 | `duration_ms` | per-step latency (also emitted as an OpenTelemetry span) |
 | `status` | `ok` / `revised` / `abstained` / `skipped` / `error` |
 
-The top-level result also carries `plan`, `language`, `confidence`
-(min of critic confidences), `abstained`, `messages`, and the populated typed
-outputs (`curated_path`, `study_plan`, `engagement_plan`, `assessment`,
-`manager_insights`). The dashboard's right-hand panel renders the trace top to
-bottom; the reflection step is highlighted.
+The top-level result also carries `plan` (including the deliberation ledger's
+`alternatives` + `resolution`), `language`, `confidence` (min of critic
+confidences), `abstained`, `messages`, and the populated typed outputs
+(`curated_path`, `study_plan`, `engagement_plan`, `assessment`,
+`manager_insights`). The dashboard's orchestration panel replays the trace with
+the real per-step timings; a critic-forced revision draws a loop-back arc with
+an iteration badge, and clicking any node opens the step's inputs, outputs,
+verdict and sources.
 
 ## Observability
 

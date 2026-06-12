@@ -35,11 +35,11 @@ cited, with a fully inspectable reasoning trace.
 
 | Weight | Criterion | Where it lives |
 |---|---|---|
-| 25% | **Accuracy & Relevance** | Citation grounding enforced at 1.0; capacity-respecting plans; thresholded readiness. ([evals](evals/), [iq-layers](docs/iq-layers.md)) |
-| 25% | **Reasoning & multi-step** | Planner–executor + 5 specialists + critic self-reflection loop — replayed live in the dashboard as an **animated agent flow** with visible loop-back edges on every critic-forced revision. ([orchestration](docs/orchestration.md)) |
-| 15% | **Creativity & originality** | Healthcare-org scenario, interactive Fabric IQ knowledge graph, simulated capacity calendar with .ics export, critic grounding loop, real Microsoft Learn MCP content. |
-| 15% | **UX & presentation** | A six-view dashboard (Learner · Graph · Calendar · Assessment · Manager · persistent Trace panel): dark design system, scenario cards, role-path graph highlighting, exam mode with live scoring, teams×tracks heatmap with designed k-anonymity suppression, skeleton/empty/abstain states, `prefers-reduced-motion` support — zero-build, served by `make run`. ([app](app/)) |
-| 20% | **Reliability & safety** | Grounding guard, PII + k-anonymity guard, abstain/clarify, CI eval gates. ([responsible-ai](docs/responsible-ai.md)) |
+| 25% | **Accuracy & Relevance** | Citation grounding enforced at 1.0 — and proven **load-bearing by ablation** (critic off → grounding drops to 91.3%; 100/100 seeded fabricated citations caught). Every citation chip opens an **evidence inspector** showing the verbatim source span. ([evals](evals/), [iq-layers](docs/iq-layers.md)) |
+| 25% | **Reasoning & multi-step** | Planner–executor + 5 specialists + critic reflection loop, replayed as an **animated agent flow** with loop-back edges. The planner exposes a **deliberation ledger** (routes considered-and-rejected, resolution sources); a **what-if slider** re-solves the plan live under a different capacity; failing the exam triggers a true **adaptive re-plan** that front-loads your actual wrong skills. ([orchestration](docs/orchestration.md)) |
+| 15% | **Creativity & originality** | Graph-first exploration of a 31-cert / 21-role ontology, simulated capacity calendar with .ics export, **what-if counterfactual slider**, **adaptive re-plan from real exam mistakes**, **deliberation ledger**, one-click **red-team attack presets**, evidence inspector, real Microsoft Learn MCP content. |
+| 15% | **UX & presentation** | Six tabs (Graph · Learner · Calendar · Assessment · Manager · Quality) plus a collapsible orchestration panel, in a **light, training-oriented design system** (Microsoft-inspired palette): scenario cards, role-path highlighting, exam mode with live scoring, k-anonymity rendered as a designed state, skeleton/empty/abstain states, `prefers-reduced-motion` support — zero-build, served by `make run`. ([app](app/)) |
+| 20% | **Reliability & safety** | Grounding guard, PII + k-anonymity guard, abstain/clarify, **red-team category with a hard gate** (10 adversarial cases — prompt injection in en/ca/es, PII exfiltration — block rate gated at 1.0, with two one-click attack presets neutralised on screen), and a **Quality tab that runs all 67 gold cases live in-product**. ([responsible-ai](docs/responsible-ai.md)) |
 
 ## 30-second quickstart
 
@@ -51,8 +51,9 @@ python -m pip install -e ".[dev,i18n]"
 make run            # or:  PYTHONPATH=src uvicorn app.api:app --reload --port 8000
 
 # 3) tests + the evaluation scorecard (the CI gate)
-make test           # 51 tests (incl. graph/calendar/progress API + PII suppression)
-make eval           # prints the scorecard below
+make test           # 57 tests (incl. API smoke, PII suppression, adaptive re-plan)
+make eval           # prints the scorecard below (67 gold cases, 6 hard gates)
+make eval-ablation  # + critic ablation: proves the grounding gate is load-bearing
 ```
 
 PowerShell (Windows): `make` may be absent — use the explicit commands, e.g.
@@ -60,9 +61,11 @@ PowerShell (Windows): `make` may be absent — use the explicit commands, e.g.
 `$env:PYTHONPATH="src"; python -m evals.run_evals`.
 
 Open the dashboard and click a scenario card: **AZ-204 learner**, **Over-capacity
-clinician (L-1012)**, **Manager view**, **Out-of-corpus (AWS)**, **Catalan input**,
-**Role path: DevOps Engineer** (knowledge graph) or **Calendar contrast: L-1012 vs
-L-1005** (capacity calendar). Each card says what to watch for.
+clinician (L-1012)**, **What-if: L-1012 with 6 hours**, **Manager view**,
+**Out-of-corpus (AWS)**, **Catalan input**, **Role path: DevOps Engineer**
+(knowledge graph), **Calendar contrast: L-1012 vs L-1005**, or attack it yourself
+with **Red team: prompt injection** / **Red team: PII exfiltration**. Each card
+says what to watch for — and the **Quality tab** runs the whole eval suite live.
 
 ## The dashboard
 
@@ -82,19 +85,38 @@ palette). Demo scenario cards sit in a collapsible strip available on every tab.
 - **Calendar** — a *simulated* Outlook-style week per learner: meetings (muted),
   focus time (green), the Engagement Agent's proposed study slots (accented, with
   why-this-slot tooltips) and a `[SYNTHETIC DEMO]` .ics export.
+- **Learner extras** — a **what-if slider** under the plan re-solves it live under
+  a different weekly capacity, with a before/after diff.
 - **Assessment** — exam mode: one question at a time, live score gauge against the
-  Fabric IQ pass threshold, per-question citations; failing routes you back into
-  the preparation loop.
+  Fabric IQ pass threshold, per-question citations; failing triggers an **adaptive
+  re-plan** that front-loads your actual wrong skills with extra hours.
 - **Manager** — teams × tracks readiness heatmap with k-anonymity-suppressed cells
   rendered honestly (🔒 n < 3), severity risk cards, aggregate team trend.
+- **Quality** — the eval scorecard as product: six hard-gate chips, metric bars,
+  the critic-ablation evidence, and a button that re-runs all 67 gold cases
+  through the real orchestrator in front of you.
 - **Orchestration trace** (collapsible side panel; unfolds automatically when
-  agents run) — the multi-agent run as an animated flow; critic-forced revisions
-  draw a visible loop-back arc, and every node opens a detail view with inputs,
-  outputs, verdicts and timings.
+  agents run) — the multi-agent run as an animated flow with a **deliberation
+  ledger** (routes considered-and-rejected, resolution sources); critic-forced
+  revisions draw a visible loop-back arc, and every node opens a detail view
+  with inputs, outputs, verdicts and timings. Foundry citation chips anywhere in
+  the app open an **evidence inspector** with the verbatim source span highlighted.
 
-<!-- screenshots: docs/img/learner.png · docs/img/graph.png · docs/img/calendar.png
-     docs/img/assessment.png · docs/img/manager.png · docs/img/trace.png -->
-*(screenshot placeholders — capture each tab at 1440×900 before submission)*
+### Screenshots
+
+| The knowledge graph with a role path lit | The capacity-calendar contrast (L-1012 vs L-1005) |
+|---|---|
+| ![Knowledge graph — DevOps Engineer path highlighted in prerequisite order](docs/img/graph.png) | ![Capacity calendar — a wall of meetings vs a roomy week, study slots placed in focus time](docs/img/calendar.png) |
+
+| Exam mode: live gauge vs the pass threshold | The adaptive re-plan: exam mistakes front-loaded |
+|---|---|
+| ![Exam results — animated gauge against the Fabric IQ threshold, per-question citations](docs/img/assessment.png) | ![Study plan re-planned from exam mistakes — Priority review milestones + the what-if slider](docs/img/learner.png) |
+
+| The deliberation ledger in the trace | Manager view: k-anonymity as a designed state |
+|---|---|
+| ![Orchestration trace with the planner's deliberation ledger open — routes rejected, resolution sources](docs/img/trace.png) | ![Manager heatmap — suppressed cell rendered honestly, severity risk cards, aggregate trend](docs/img/manager.png) |
+
+![Quality tab — all 67 gold cases executed live, six hard gates green, critic-ablation evidence](docs/img/quality.png)
 
 ## The multi-agent system
 
@@ -131,20 +153,29 @@ Details and upgrade paths: [docs/iq-layers.md](docs/iq-layers.md).
 
 ## Evaluation scorecard
 
-55 labelled synthetic gold cases (`evals/gold_cases.jsonl`) across routing,
-grounding, capacity-fit, PII, readiness, abstention and ca/es language. The two
-hard gates fail CI if violated.
+67 labelled synthetic gold cases (`evals/gold_cases.jsonl`) across routing,
+grounding, capacity-fit, PII, readiness, abstention, **red-team adversarial
+inputs** (plus benign look-alikes that must NOT be refused) and ca/es language.
+All six gates are hard — any failure fails CI — and the **Quality tab runs the
+whole suite live inside the product** (deterministic offline agents, seconds).
 
 | Metric | Result | Gate |
 |---|---|---|
-| Agent-routing accuracy | **100%** | ≥ 90% |
+| Agent-routing accuracy | **100%** | **≥ 90% (hard)** |
 | **Citation grounding rate** | **100%** | **== 1.0 (hard)** |
 | Assessment grounding pass | **100%** | — |
 | **Manager PII-leak total** | **0** | **== 0 (hard)** |
-| Capacity-fit pass rate | **100%** | == 1.0 |
+| Capacity-fit pass rate | **100%** | **== 1.0 (hard)** |
 | Assessment scoring accuracy | **100%** | — |
-| Abstention correctness | **100%** | == 1.0 |
+| Abstention correctness | **100%** | **== 1.0 (hard)** |
+| **Adversarial block rate (red team)** | **100%** | **== 1.0 (hard)** |
 | Language accuracy (en/ca/es) | **100%** | — |
+| Calibration (high-conf correct / low-conf abstained) | **100% / 100%** | — |
+
+**Is the grounding gate load-bearing?** `make eval-ablation` disables the critic
+and re-measures: grounding drops to **91.3%** (103 claims re-checked
+independently), and the critic catches **100/100** seeded fabricated citations.
+The 1.0 is enforced, not vacuous.
 
 Run `make eval` to reproduce. The managed Foundry `GroundednessEvaluator` /
 `RelevanceEvaluator` integration is in `evals/foundry_eval.py` (used when

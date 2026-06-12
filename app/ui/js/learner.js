@@ -16,13 +16,16 @@ const AGENT_CARD = {
 };
 
 let cites = null;
+let renderGen = 0;   // bumped on every re-render; stale what-if callbacks bail
 
 export function init() {
+  renderGen++;
   $("learner-results").innerHTML = emptyState("◎", "Ready when you are",
     "Pick a scenario above or describe a goal — the orchestrator plans, five specialists execute, and the critic verifies every claim.");
 }
 
 export function showLoading() {
+  renderGen++;
   $("learner-results").innerHTML = [
     skeletonCard("① Learning Path Curator", 3),
     skeletonCard("② Study Plan Generator", 4),
@@ -37,6 +40,7 @@ export function showError(msg) {
 
 /* Build all cards hidden; the trace replay reveals them in agent order. */
 export function render(result) {
+  renderGen++;
   cites = citeCollector();
   const out = $("learner-results");
 
@@ -48,7 +52,8 @@ export function render(result) {
 
   const html = [];
   if (result.curated_path) html.push(curatorCard(result.curated_path));
-  if (result.study_plan) html.push(planCard(result.study_plan));
+  if (result.study_plan) html.push(planCard(result.study_plan, result.request));
+  if (result.study_plan) html.push(whatifCard(result));
   if (result.engagement_plan) html.push(engagementCard(result, result.engagement_plan));
   if (result.assessment) html.push(assessmentCard(result.assessment));
   if (result.abstained) {
@@ -81,6 +86,7 @@ export async function finish(result) {
     el.style.display = ""; el.classList.add("fade-up");
   });
   hydrateMiniWeek();
+  wireWhatif(result);
   const srcSlot = $("learner-sources-slot");
   if (srcSlot && cites) srcSlot.innerHTML = sourcesCard(cites.list());
 
@@ -117,15 +123,22 @@ function curatorCard(p) {
     ${resources}</div>`;
 }
 
-function planCard(s) {
+function planCard(s, request) {
   const c = s.capacity;
-  const rows = s.milestones.map((m) => `<tr>
+  // banner driven by what the agent ACTUALLY front-loaded, not the raw request
+  const focus = s.milestones.filter((m) => m.title.startsWith("Priority review")).map((m) => m.skill);
+  const rows = s.milestones.map((m) => `<tr class="${m.title.startsWith("Priority review") ? "prio" : ""}">
       <td class="mono">W${m.week}</td><td>${esc(m.title)}</td>
       <td class="mono">${m.hours}h</td><td><span class="pill">${esc(m.difficulty)}</span></td>
       <td>${m.citation ? cites.chip(m.citation) : ""}</td></tr>`).join("");
+  const replanBanner = focus.length ? `
+    <div class="replan-banner">↻ <b>Re-planned from your exam mistakes.</b>
+      ${focus.map((f) => `<span class="pill">${esc(f)}</span>`).join(" ")}
+      front-loaded with extra hours — same total, redistributed.</div>` : "";
   return `<div class="card" id="card-plan" data-reveal>
     <div class="card-title"><span class="step-no">2</span> Study Plan Generator
       <span class="pill">Fabric IQ + Work IQ</span></div>
+    ${replanBanner}
     <div class="kpis" style="margin-bottom:10px">
       <div class="kpi"><div class="k">weeks</div><div class="v">${s.total_weeks}</div></div>
       <div class="kpi"><div class="k">focus h/week</div><div class="v">${c.available_hours_per_week}</div></div>
@@ -167,6 +180,79 @@ function assessmentCard(a) {
       <button class="btn-primary" id="open-exam">Take it as an exam →</button>
       <button class="btn-secondary" id="open-review">Review all questions</button>
     </div></div>`;
+}
+
+/* What-if (Feature: counterfactual re-planning). Dragging the slider re-runs
+   the SAME request with a different weekly capacity — live constraint
+   propagation through Study Plan → Engagement — and diffs the outcome. */
+function whatifCard(result) {
+  const cur = result.study_plan.capacity.available_hours_per_week;
+  return `<div class="card" id="whatif-card" data-reveal>
+    <div class="card-title spread">
+      <span>What if? <span class="pill">live constraint propagation</span></span>
+      <span class="pill mono" id="whatif-value">${cur}h focus/week</span>
+    </div>
+    <input type="range" id="whatif-slider" min="1" max="14" step="0.5" value="${cur}"
+      aria-label="What-if weekly focus hours" style="width:100%">
+    <div id="whatif-diff" class="muted small" style="margin-top:8px">
+      Drag to re-solve the plan under a different weekly capacity — the agents
+      re-run live with the override.</div>
+  </div>`;
+}
+
+function wireWhatif(baseline) {
+  const slider = document.getElementById("whatif-slider");
+  if (!slider) return;
+  const myGen = renderGen;                            // this run's generation
+  let timer = null;
+  let seq = 0;
+  // stale = the results pane was re-rendered (new run, Clear, …) since wiring
+  const stale = () => myGen !== renderGen || !slider.isConnected;
+  slider.addEventListener("input", () => {
+    if (stale()) return;
+    document.getElementById("whatif-value").textContent = `${slider.value}h focus/week`;
+    clearTimeout(timer);
+    timer = setTimeout(async () => {
+      if (stale()) return;
+      const v = parseFloat(slider.value);
+      const mySeq = ++seq;
+      const box = document.getElementById("whatif-diff");
+      if (!box) return;
+      box.innerHTML = `<span class="pulse">Re-running Study Plan + Engagement with ${v}h/week…</span>`;
+      try {
+        const alt = await api.run({ ...baseline.request, available_hours_per_week: v });
+        if (mySeq !== seq || stale()) return;         // a newer drag or run won
+        const box2 = document.getElementById("whatif-diff");
+        if (!box2) return;
+        box2.innerHTML = whatifDiff(baseline, alt, v);
+        document.getElementById("whatif-apply")?.addEventListener("click", () =>
+          store.emit("run-request", { ...baseline.request, available_hours_per_week: v }));
+      } catch (e) {
+        if (mySeq === seq && !stale()) {
+          const box2 = document.getElementById("whatif-diff");
+          if (box2) box2.innerHTML = `<span class="muted">What-if failed: ${esc(e.message)}</span>`;
+        }
+      }
+    }, 350);
+  });
+}
+
+function whatifDiff(base, alt, v) {
+  const b = base.study_plan, a = alt.study_plan;
+  const arrow = (x, y, unit = "") => x === y
+    ? `<b>${y}${unit}</b> <span class="muted">(unchanged)</span>`
+    : `<s class="muted">${x}${unit}</s> → <b style="color:${y < x ? "var(--good)" : "var(--warn)"}">${y}${unit}</b>`;
+  const bw = base.engagement_plan?.weekly_windows || [];
+  const aw = alt.engagement_plan?.weekly_windows || [];
+  return `
+    <div class="wrap" style="gap:16px;align-items:center">
+      <span>weeks to ready: ${arrow(b.total_weeks, a.total_weeks)}</span>
+      <span>utilisation: ${arrow(Math.round(b.capacity.utilisation * 100), Math.round(a.capacity.utilisation * 100), "%")}</span>
+      <span>sessions/week: ${arrow(bw.length, aw.length)}</span>
+      <span>capacity: ${a.capacity.fits ? badge("fit", "fits") : badge("nofit", "over")}</span>
+      <button class="btn-secondary btn-sm" id="whatif-apply">Apply scenario →</button>
+    </div>
+    <div class="muted small" style="margin-top:6px">${esc(a.capacity.note)}</div>`;
 }
 
 function abstainCard(result) {
