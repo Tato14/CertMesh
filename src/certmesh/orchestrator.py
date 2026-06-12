@@ -51,12 +51,59 @@ _EXTERNAL_HINTS = (
 _CODE_RE = re.compile(r"\b[A-Z]{2,}-?\d{2,}\b")
 _CERTISH_RE = re.compile(r"\b(certif|exam|certified)\w*", re.IGNORECASE)
 
+# Unsafe-request patterns (narrow, multi-word, en/ca/es). Two families:
+# injection phrasing (always refused) and third-party record access (refused
+# unless the learner is plainly talking about THEMSELVES — first-person goals
+# or an id matching the request's own learner_id are legitimate). The manager
+# view is structurally PII-safe (aggregation + critic gate), so the policy
+# refusal applies to the learner pipeline only. This filter is defense-in-depth
+# against known patterns — the load-bearing safety controls are the grounding
+# gate and aggregate-only manager view. Gated by redteam_block == 1.0.
+_POLICY_INJECTION_RES = (
+    re.compile(r"\bignor\w*\b.{0,40}\b(instruction|instrucci)", re.IGNORECASE),
+    re.compile(r"\b(reveal|show|print|mostra|muestra)\b.{0,30}\bsystem prompt", re.IGNORECASE),
+    re.compile(r"\b(fabricate|forge|invent|make up|inventa|falsifica)\b.{0,30}"
+               r"\b(citation|source|cita|font|fuente)", re.IGNORECASE),
+    re.compile(r"\b(dump|print|output)\b.{0,30}\b(contents|json|database|\.json)", re.IGNORECASE),
+)
+_POLICY_RECORDS_RES = (
+    re.compile(r"\b(list|show|give|name|dump|llista|lista|muestra|dona|da)\b.{0,40}"
+               r"\b(every|all|each|tots|tota|todos|todas|cada)\b.{0,40}"
+               r"\b(learner|employee|empleat|empleado|alumn)\w*.{0,40}"
+               r"\b(id|ids|score|scores|email|records?|data|nota|notes|dades|datos)\b",
+               re.IGNORECASE),
+    re.compile(r"\b(L-\d{4}|EMP-\d{3})\b.{0,40}\b(score|practice|data|record|nota|notes|dades|datos)",
+               re.IGNORECASE),
+    re.compile(r"\b(score|practice|data|record|nota|notes|dades|datos)\w*.{0,40}\b(L-\d{4}|EMP-\d{3})\b",
+               re.IGNORECASE),
+)
+_FIRST_PERSON_RE = re.compile(
+    r"\b(i am|i'm|i need|my|em dic|s[oó]c|el meu|la meva|les meves|soy|me llamo|mis?)\b",
+    re.IGNORECASE)
+_GOAL_ID_RE = re.compile(r"\b(L-\d{4}|EMP-\d{3})\b")
+
 
 def _looks_like_named_target(goal: str) -> bool:
     low = goal.lower()
     if any(h in low for h in _EXTERNAL_HINTS):
         return True
     if _CODE_RE.search(goal):
+        return True
+    return False
+
+
+def _violates_policy(goal: str, own_learner_id: str | None = None) -> bool:
+    goal = goal or ""
+    if any(rx.search(goal) for rx in _POLICY_INJECTION_RES):
+        return True
+    if any(rx.search(goal) for rx in _POLICY_RECORDS_RES):
+        # self-referential goals are legitimate: first-person phrasing, or the
+        # only id mentioned is the requester's own learner id
+        ids = set(_GOAL_ID_RE.findall(goal))
+        if ids and own_learner_id and ids <= {own_learner_id}:
+            return False
+        if _FIRST_PERSON_RE.search(goal):
+            return False
         return True
     return False
 
@@ -79,55 +126,126 @@ class Orchestrator:
 
     # ── resolution ──────────────────────────────────────────────────────────
     def _resolve(self, req: LearningRequest):
+        """Resolve learner/cert/role/track, recording WHICH source won each
+        resolution — the deliberation ledger the trace exposes."""
+        sources: dict[str, str] = {}
         learner = self.learners.get(req.learner_id)
         cert = self.fabric.resolve_cert(req.certification)
+        if cert:
+            sources["certification"] = f"{cert} ← explicit request field"
         if not cert and learner:
             cert = self.fabric.resolve_cert(learner.certification)
+            if cert:
+                sources["certification"] = f"{cert} ← learner record {learner.learner_id}"
         if not cert and req.goal:
             cert = self.fabric.resolve_cert(req.goal)
+            if cert:
+                sources["certification"] = f"{cert} ← goal text"
         role = req.role or (learner.role if learner else None)
+        role_src = ("explicit request field" if req.role
+                    else f"learner record {learner.learner_id}" if learner else None)
         if not cert and role:
             required = self.fabric.required_certs(role)
             cert = required[0] if required else None
-        role = role or (self.fabric.role_for_cert(cert) if cert else None) or "learner"
+            if cert:
+                sources["certification"] = f"{cert} ← first required cert of role '{role}'"
+        if not role and cert:
+            inferred = self.fabric.role_for_cert(cert)
+            if inferred:
+                role, role_src = inferred, f"Fabric IQ role requiring {cert}"
+        role = role or "learner"
+        sources["role"] = f"{role} ← {role_src or 'default'}"
         track = (req.track or (learner.track if learner else None)
                  or (self.fabric.track_for(cert) if cert else "technical"))
         employee_id = learner.employee_id if learner else None
-        return learner, cert, role, track, employee_id
+        sources["capacity"] = (
+            f"{req.available_hours_per_week}h/week ← explicit what-if override"
+            if req.available_hours_per_week is not None
+            else f"Work IQ focus signal ({employee_id or 'neutral default'})")
+        return learner, cert, role, track, employee_id, sources
 
     def _context(self, req, language, cert, role, track, learner, employee_id) -> AgentContext:
         return AgentContext(
             cert_code=cert, role=role, track=track, language=language, view=req.view,
             learner=learner, employee_id=employee_id,
             available_hours_per_week=req.available_hours_per_week,
-            team=req.team, goal=req.goal,
+            team=req.team, goal=req.goal, focus_skills=list(req.focus_skills),
             fabric=self.fabric, foundry=self.foundry, work=self.work, ms_learn=self.ms_learn,
         )
 
     # ── planning ──────────────────────────────────────────────────────────────
-    def _plan(self, req, cert, role) -> tuple[PlanDecision, str | None]:
+    def _plan(self, req, cert, role, sources=None) -> tuple[PlanDecision, str | None]:
+        sources = sources or {}
         if req.view == "manager":
             return PlanDecision(
                 view="manager",
                 agents_to_run=[self.manager.name],
                 reasoning=("Manager view: route to the Manager Insights Agent for aggregate, "
                            "PII-safe team readiness and risk; no learner-specific specialists needed."),
+                alternatives=[
+                    "learner pipeline — rejected: view is 'manager'",
+                    "raw per-learner report — rejected by design: aggregate-only with "
+                    "k-anonymity suppression; the critic scans the output for identifiers",
+                ],
+                resolution={"scope": req.team or "all teams"},
             ), None
+        # policy refusal: unsafe-request patterns short-circuit BEFORE routing,
+        # even when the goal also names a resolvable certification.
+        if req.goal and _violates_policy(req.goal, req.learner_id):
+            return PlanDecision(
+                view="learner", agents_to_run=[],
+                reasoning=("The goal matches an unsafe-request pattern (prompt injection or "
+                           "individual-record access) — refusing by policy before any agent runs."),
+                alternatives=[
+                    "full learner pipeline — rejected: policy refusal precedes routing",
+                    "clarify — rejected: this is not ambiguity; the request itself is unsafe",
+                ],
+                resolution={"policy": "unsafe-request pattern matched in goal"},
+            ), "policy"
         if cert:
+            extra = ""
+            alts = [
+                "manager route — rejected: view is 'learner'",
+                f"abstain (out-of-corpus) — rejected: {cert} is in the approved knowledge base",
+                f"clarify — rejected: certification resolved ({sources.get('certification', cert)})",
+            ]
+            if req.focus_skills:
+                extra = (f" Re-planning with {len(req.focus_skills)} weak skill(s) "
+                         "prioritised from exam feedback.")
+                alts.append("original milestone order — rejected: exam feedback flags "
+                            f"{len(req.focus_skills)} weak skill(s) to front-load")
             return PlanDecision(
                 view="learner",
                 agents_to_run=[self.curator.name, self.study.name,
                                self.engagement.name, self.assessment.name],
                 reasoning=(f"Learner view with a resolved certification ({cert}): curate cited "
                            "content → build a capacity-aware plan → schedule around work rhythm → "
-                           "assess readiness with grounded questions. Critic verifies grounding throughout."),
+                           "assess readiness with grounded questions. Critic verifies grounding "
+                           "throughout." + extra),
+                alternatives=alts,
+                resolution=dict(sources),
             ), None
         # no cert resolved → abstain (clarify vs out-of-corpus)
         if req.goal and _looks_like_named_target(req.goal):
-            return PlanDecision(view="learner", agents_to_run=[],
-                                reasoning="Named a certification outside the approved knowledge base — abstaining."), "unknown_cert"
-        return PlanDecision(view="learner", agents_to_run=[],
-                            reasoning="No certification or role identified — asking the learner to clarify."), "ambiguous"
+            return PlanDecision(
+                view="learner", agents_to_run=[],
+                reasoning="Named a certification outside the approved knowledge base — abstaining.",
+                alternatives=[
+                    "full learner pipeline — rejected: the named target is outside the "
+                    "approved knowledge base, so nothing could be grounded",
+                    "clarify — rejected: the goal is specific, just unsupported",
+                ],
+                resolution={"certification": "unresolved ← external target named in goal"},
+            ), "unknown_cert"
+        return PlanDecision(
+            view="learner", agents_to_run=[],
+            reasoning="No certification or role identified — asking the learner to clarify.",
+            alternatives=[
+                "full learner pipeline — rejected: no certification resolvable from the "
+                "request field, learner record, goal text or role requirements",
+            ],
+            resolution={"certification": "unresolved ← all four sources empty"},
+        ), "ambiguous"
 
     # ── execution helpers ─────────────────────────────────────────────────────
     def _timed(self, name: str, fn):
@@ -178,8 +296,8 @@ class Orchestrator:
         self.tracer = Tracer(self.config)
         t0 = time.perf_counter()
         language = detect_language(req.goal or "", req.language)
-        learner, cert, role, track, employee_id = self._resolve(req)
-        plan, abstain_reason = self._plan(req, cert, role)
+        learner, cert, role, track, employee_id, sources = self._resolve(req)
+        plan, abstain_reason = self._plan(req, cert, role, sources)
 
         steps: list[TraceStep] = []
         # Step 0: the planner's own reasoning is part of the trace.

@@ -16,6 +16,13 @@ export const api = {
   calendar: (id) => getJSON(`/api/calendar/${encodeURIComponent(id)}`),
   progress: (id) => getJSON(`/api/progress/${encodeURIComponent(id)}`),
   teamProgress: (id) => getJSON(`/api/progress/team/${encodeURIComponent(id)}`),
+  source: (id) => getJSON(`/api/source?id=${encodeURIComponent(id)}`),
+  scorecard: () => getJSON("/api/scorecard"),
+  async runEvals() {
+    const r = await fetch("/api/evals/run", { method: "POST" });
+    if (!r.ok) throw new Error(`eval run failed (${r.status})`);
+    return r.json();
+  },
   async run(req) {
     const r = await fetch("/api/run", {
       method: "POST",

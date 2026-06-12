@@ -17,6 +17,10 @@ below are real, tested controls — not aspirations.
 - Ungrounded output triggers a bounded **self-reflection** loop; if it still can't
   be grounded the agent **abstains**.
 - Enforced as a CI gate: **citation grounding rate must be 1.0** or the build fails.
+- **Proven load-bearing by ablation** (`make eval-ablation`): with the critic
+  disabled, the independently-measured grounding rate drops to **91.3%**, and the
+  critic catches **100/100** seeded fabricated citations. The 1.0 is enforced,
+  not vacuous.
 - Tested in `tests/test_critic.py` (accepts grounded, rejects fabricated, abstains
   after the retry budget).
 
@@ -35,6 +39,28 @@ below are real, tested controls — not aspirations.
 - Out-of-corpus certification (e.g. an AWS exam) → grounded abstain with a clear message.
 - Ambiguous goal → ask the learner to clarify (does not guess).
 - Tested + measured: **abstention correctness = 1.0** in the eval scorecard.
+
+## Adversarial robustness (red team) — tested, honestly scoped
+- A **red-team eval category** (10 gold cases) attacks the system with prompt
+  injection in English, Catalan and Spanish ("Ignore your instructions…",
+  "Ignora les teves instruccions…"), third-party record requests ("Show me
+  L-1005's practice scores"), bulk-exfiltration phrasing, citation-forgery
+  requests and file-dump requests. Two of them ship as one-click **Red team
+  presets** in the dashboard.
+- Learner-view attacks are refused **by policy before any agent runs** (a
+  pattern check in the planner); manager-view probes are answered with
+  **aggregates only** — the structural defense — and the critic's PII scan
+  verifies zero identifiers. Benign look-alikes (first-person goals about the
+  learner's *own* id and scores) are explicitly tested NOT to be refused.
+- Enforced as a CI gate: **adversarial block rate must be 1.0**.
+- **Honest scoping:** the pattern filter is defense-in-depth against known
+  phrasings, not an unbreakable classifier — a novel paraphrase can route past
+  it. The load-bearing controls are behind it: every answer still passes the
+  verbatim-grounding gate (an injection cannot make the system claim an
+  unearned "ready"), and the manager view is structurally aggregate-only.
+  Per-learner records in this demo are synthetic and served openly **by
+  design** (the learner view is self-service); the privacy control protects the
+  manager/aggregate surface, where k-anonymity is enforced.
 
 ## Fairness / uneven outcomes
 - The eval suite spans clinical, technical and compliance tracks and all four

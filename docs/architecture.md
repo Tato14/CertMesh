@@ -71,6 +71,9 @@ flowchart TD
 | `GET /api/progress/{learner_id}` | Synthetic weekly progress snapshots (`data/progress_history.json`) + trend feedback against the Fabric IQ threshold. |
 | `GET /api/progress/team/{team_id}` | **Aggregate-only** team progress, held to the manager-view privacy contract: k-anonymity suppression (n < 3) and a belt-and-braces identifier scan (covered by tests). |
 | `GET /healthz` | Backend status for the dashboard's status pills. |
+| `GET /api/scorecard` | The last evaluation scorecard + critic-ablation evidence (written by `make eval` / `--ablation` or the live run). |
+| `POST /api/evals/run` | Runs the FULL gold-case suite in-process (deterministic, offline, seconds) and returns metrics + the six hard gates — the CI gate, executed inside the product. |
+| `GET /api/source?id=` | The verbatim corpus chunk behind a Foundry IQ citation — powers the evidence inspector (cited span highlighted in the source). |
 
 The presentation endpoints (`graph`/`calendar`/`progress`) are additive read-only
 layers over the IQ layers and synthetic datasets — agent contracts, trace
@@ -91,10 +94,11 @@ src/certmesh/
   tools/ms_learn_mcp  Microsoft Learn MCP client
   foundry/            model backend (Agent Framework) + OTel tracing
 app/
-  api.py              FastAPI gateway (run/graph/calendar/progress/presets/healthz)
+  api.py              FastAPI gateway (run/graph/calendar/progress/scorecard/
+                      evals-run/source/presets/healthz)
   ui/                 zero-build dashboard: index.html + css/ (design system)
                       + js/ native ES modules (app, trace, learner, graph,
-                      calendar, quiz, progress, manager) — no bundler, no node
+                      calendar, quiz, progress, manager, quality) — no bundler
 evals/                gold cases + local evaluators + Foundry eval SDK path
 deploy/               Dockerfile + hosted-agent runbook
 ```

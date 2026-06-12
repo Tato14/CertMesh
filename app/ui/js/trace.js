@@ -119,7 +119,16 @@ export async function replay(result, onAgentSettled) {
   $("trace-detail").innerHTML = "";
 
   const box = $("trace-content");
-  const planHeader = `<div class="plan-reasoning"><b>Plan.</b> ${esc(result.plan.reasoning)}</div>`;
+  const alts = result.plan.alternatives || [];
+  const res = result.plan.resolution || {};
+  const ledger = (alts.length || Object.keys(res).length) ? `
+    <details class="ledger">
+      <summary>deliberation — ${alts.length} route${alts.length === 1 ? "" : "s"} rejected · resolution sources</summary>
+      ${alts.map((a) => `<div class="alt">✕ ${esc(a)}</div>`).join("")}
+      ${Object.entries(res).map(([k, v]) =>
+        `<div class="src"><b>${esc(k)}</b> ${esc(String(v))}</div>`).join("")}
+    </details>` : "";
+  const planHeader = `<div class="plan-reasoning"><b>Plan.</b> ${esc(result.plan.reasoning)}${ledger}</div>`;
 
   if (reducedMotion()) {
     box.innerHTML = planHeader + groups.map((g) =>

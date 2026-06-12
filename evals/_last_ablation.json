@@ -1,0 +1,8 @@
+{
+  "grounding_with_critic": 1.0,
+  "grounding_without_critic": 0.9126,
+  "claims_checked_without_critic": 103,
+  "injection_catch_rate": 1.0,
+  "n_injections": 100,
+  "seed": 42
+}

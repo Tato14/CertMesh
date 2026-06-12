@@ -127,6 +127,8 @@ class LearningRequest(BaseModel):
     track: str | None = None
     available_hours_per_week: float | None = None  # override learner capacity
     language: Language | None = None               # explicit hint; else detected
+    focus_skills: list[str] = Field(default_factory=list)  # weak skills to
+    # prioritise (e.g. from exam feedback); additive, empty = original order
 
 
 # ──────────────────────────── Learning Path Curator ────────────────────────
@@ -304,6 +306,10 @@ class PlanDecision(BaseModel):
     view: View
     agents_to_run: list[str] = Field(default_factory=list)
     reasoning: str = ""
+    # Deliberation ledger (additive): routes considered and rejected, and how
+    # each input (certification, role, capacity) was actually resolved.
+    alternatives: list[str] = Field(default_factory=list)
+    resolution: dict = Field(default_factory=dict)
 
 
 class TraceStep(BaseModel):

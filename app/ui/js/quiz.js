@@ -141,6 +141,11 @@ function renderResults() {
   const score = correct / a.questions.length;
   const passed = score >= a.threshold;
 
+  // the skills the learner actually got wrong drive the adaptive re-plan
+  // (synthesis questions like "X + Y" contribute both underlying skills)
+  const weakSkills = [...new Set(a.questions.flatMap((q, i) =>
+    answers[i] === q.answer_index ? [] : q.skill.split(" + ")))];
+
   const items = a.questions.map((q, i) => {
     const ok = answers[i] === q.answer_index;
     return `<div class="q-review-item">
@@ -164,17 +169,19 @@ function renderResults() {
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
           ${passed
             ? `<button class="btn-secondary" id="quiz-again">Retake</button>`
-            : `<button class="btn-primary" id="quiz-replan">↻ Back into the preparation loop</button>
+            : `<button class="btn-primary" id="quiz-replan">↻ Re-plan around my ${weakSkills.length} weak skill${weakSkills.length === 1 ? "" : "s"}</button>
                <button class="btn-ghost" id="quiz-again">Retake</button>`}
         </div>
-        ${passed ? "" : `<p class="muted small" style="margin-top:8px">Re-runs the planner with the same goal —
-          curator → plan → engagement → assessment — so the study plan adapts before the next attempt.</p>`}
+        ${passed ? "" : `<p class="muted small" style="margin-top:8px">Your mistakes
+          (${weakSkills.map(esc).join(", ")}) are fed back to the planner — the new study plan
+          front-loads them with extra hours. Watch the plan reasoning in the trace.</p>`}
       </div>
     </div>
     <div style="margin-top:20px">${items}</div>`;
   animateGauge(score, a.threshold);
   $("quiz-again")?.addEventListener("click", () => { answers.fill(null); idx = 0; renderQuestion(); });
-  $("quiz-replan")?.addEventListener("click", () => store.emit("run-request", { ...lastRequest }));
+  $("quiz-replan")?.addEventListener("click", () =>
+    store.emit("run-request", { ...lastRequest, focus_skills: weakSkills }));
 }
 
 /* ── review-all (fast judging) ──────────────────────────────────────────── */

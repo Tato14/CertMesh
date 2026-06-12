@@ -29,6 +29,7 @@ class AgentContext:
     available_hours_per_week: float | None = None
     team: str | None = None
     goal: str = ""
+    focus_skills: list[str] = field(default_factory=list)  # weak skills to front-load
 
     # IQ layers + tools (injected so agents never construct their own).
     fabric: FabricIQ = None  # type: ignore[assignment]

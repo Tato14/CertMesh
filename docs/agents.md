@@ -9,7 +9,7 @@ the system correct, testable and CI-gated even with no model at all.
 
 | Agent | Responsibility | Grounding / tools | Input → Output |
 |---|---|---|---|
-| **Orchestrator** | Parse + plan routing, dispatch, aggregate, build the trace | Fabric IQ (resolve cert/role), language detection | `LearningRequest` → `OrchestrationResult` |
+| **Orchestrator** | Parse + plan routing (with a **deliberation ledger** of rejected routes + resolution sources), **policy refusal** for unsafe goals, dispatch, aggregate, build the trace | Fabric IQ (resolve cert/role), language detection, unsafe-request patterns | `LearningRequest` → `OrchestrationResult` |
 | **Learning Path Curator** | Map cert → role-relevant skills → cited resources | Foundry IQ + Microsoft Learn MCP | ctx → `CuratedPath` |
 | **Study Plan Generator** | Capacity-aware schedule, sequenced by difficulty/prereqs | Fabric IQ (skills, prereqs, hours, threshold) + Work IQ (focus hours) | ctx → `StudyPlan` |
 | **Engagement Agent** | Reminder timing + study windows from work rhythm | Work IQ (meeting load, focus, preferred slot) | ctx → `EngagementPlan` |
@@ -25,6 +25,8 @@ the system correct, testable and CI-gated even with no model at all.
 
 ## 2. Study Plan Generator — `agents/study_plan.py`
 - **Reasoning:** constraint-satisfaction planning. Weekly study hours never exceed the learner's available focus capacity (Work IQ) — the horizon is extended instead. Skills are sequenced foundational→advanced (Fabric IQ difficulty measure); prerequisite certs are sequenced first; a capstone mock-exam milestone closes the plan.
+- **Adaptive re-plan:** when the request carries `focus_skills` (the learner's actual exam mistakes), those skills are front-loaded as "Priority review" milestones with a 1.5× share of the SAME hour pool — totals conserved, so the capacity check is unaffected. The plan reasoning and trace say so explicitly.
+- **What-if override:** `available_hours_per_week` re-solves the same plan under a different capacity constraint — the dashboard's live what-if slider.
 - Emits a `CapacityCheck` (`fits`, `utilisation`, `weeks`, note) the dashboard renders as a badge.
 
 ## 3. Engagement Agent — `agents/engagement.py`

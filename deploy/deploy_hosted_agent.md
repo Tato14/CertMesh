@@ -1,10 +1,10 @@
-# Deploying CertMesh as a Foundry Agent Service Hosted Agent
+﻿# Deploying CertMesh as a Foundry Agent Service Hosted Agent
 
 CertMesh runs fully locally with no cloud. This runbook lights up the real
 Microsoft Foundry path: a model deployment, Foundry IQ over Azure AI Search, and
-the orchestrator packaged as a **Hosted Agent** (container image → Azure Container
-Registry → Foundry Agent Service, with a Microsoft Entra agent identity and a
-managed endpoint). Secrets never enter the image — managed identity is used at
+the orchestrator packaged as a **Hosted Agent** (container image â†’ Azure Container
+Registry â†’ Foundry Agent Service, with a Microsoft Entra agent identity and a
+managed endpoint). Secrets never enter the image â€” managed identity is used at
 runtime.
 
 > APIs verified June 2026. The product was renamed to **Microsoft Foundry**
@@ -12,7 +12,7 @@ runtime.
 > "Foundry projects (new)" API. Adjust to the exact API version in your tenant.
 
 ## 0. Prerequisites
-- A Microsoft Foundry project (Overview ▸ Endpoints gives the project endpoint).
+- A Microsoft Foundry project (Overview â–¸ Endpoints gives the project endpoint).
 - A deployed model in the project catalog (e.g. `gpt-4o`).
 - `az login`, Docker, and an Azure Container Registry (ACR).
 - (For real Foundry IQ) an Azure AI Search resource.
@@ -37,7 +37,7 @@ managed identity, not committed):
 | `CERTMESH_MCP_ENABLED` | `true` to use the live Microsoft Learn MCP server |
 
 Authentication uses **`DefaultAzureCredential`** (the Hosted Agent's Entra agent
-identity / managed identity) — no API keys in the image. Grant that identity
+identity / managed identity) â€” no API keys in the image. Grant that identity
 `Cognitive Services User` on the Foundry project and `Search Index Data Reader` on
 the search service.
 
@@ -79,11 +79,11 @@ exposes the endpoint. The FastAPI `/healthz` route backs the container health
 probe.
 
 ## 5. Verify
-- `GET /healthz` → `model_backend: foundry`, `retrieval_backend: azure_search`.
-- `make eval` from CI still gates grounding == 1.0 and PII == 0.
+- `GET /healthz` â†’ `model_backend: foundry`, `retrieval_backend: azure_search`.
+- `make eval` from CI still enforces all six hard gates (grounding == 1.0, PII == 0, redteam == 1.0, routing, capacity, abstention).
 - Traces appear in Foundry tracing / Azure Monitor (Application Insights).
 
 ## Graceful degradation
 If any of the above is absent, CertMesh automatically falls back to the
 deterministic model stub, the local BM25 Foundry IQ index, and the Microsoft Learn
-offline cache — so the app never hard-blocks on cloud provisioning.
+offline cache â€” so the app never hard-blocks on cloud provisioning.

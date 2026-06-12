@@ -17,15 +17,17 @@ Mapped to the contest requirements and the rubric.
 - [ ] **≤5-min original demo video uploaded to YouTube/Vimeo** — record using `docs/demo-script.md`; add the link to the README.
 
 ## Highly-valued extras
-- [x] **Evals** — 55 labelled gold cases + scorecard + CI gate (`evals/`).
+- [x] **Evals** — 67 labelled gold cases + scorecard + **6 hard CI gates**, runnable **live in-product** from the Quality tab (`evals/`, `POST /api/evals/run`).
+- [x] **Red-team category** — 10 adversarial cases (en/ca/es injection, PII exfiltration) + benign look-alikes, gated at `redteam_block == 1.0`, with two one-click attack presets.
+- [x] **Critic ablation** — `make eval-ablation` proves the grounding gate is load-bearing (critic off → 91.3%; 100/100 fabricated citations caught).
 - [x] **Telemetry** — per-agent OpenTelemetry spans, Foundry tracing bridge (`foundry/tracing.py`).
-- [x] **Advanced reasoning patterns** — planner–executor, critic/verifier, bounded self-reflection, abstention.
-- [x] **RAI fallbacks** — grounding guard, PII + k-anonymity guard, abstain/clarify under uncertainty (`docs/responsible-ai.md`).
+- [x] **Advanced reasoning patterns** — planner–executor with a **deliberation ledger**, critic/verifier, bounded self-reflection, abstention, **adaptive re-plan from exam mistakes**, **what-if counterfactual re-planning**.
+- [x] **RAI fallbacks** — grounding guard, PII + k-anonymity guard, policy refusal, abstain/clarify under uncertainty (`docs/responsible-ai.md`).
 - [x] **Hosted deployment story** — `deploy/Dockerfile` + `deploy/deploy_hosted_agent.md` (ACR → Foundry Agent Service).
 
 ## Definition of done (self-check)
-- [x] `pytest` green (38 tests).
-- [x] `evals/run_evals.py` prints the scorecard; **citation grounding = 1.0**, **manager PII-leak = 0**; CI enforces both.
+- [x] `pytest` green (57 tests).
+- [x] `evals/run_evals.py` prints the scorecard; **citation grounding = 1.0**, **manager PII-leak = 0**, **adversarial block = 1.0**; CI enforces all six gates.
 - [x] `make run` serves the dashboard; all presets (incl. over-capacity, out-of-corpus, Catalan/Spanish) produce correct, cited, traced results.
 - [x] Foundry IQ works against Azure AI Search when configured and via the local fallback otherwise; Microsoft Learn MCP returns real cited content.
 - [x] `docs/` complete (architecture, agents, orchestration, iq-layers, demo-script, submission-checklist, responsible-ai).

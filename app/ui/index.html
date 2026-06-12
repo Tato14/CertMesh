@@ -26,6 +26,7 @@
     <button role="tab" data-tab="calendar" aria-selected="false">Calendar</button>
     <button role="tab" data-tab="assessment" aria-selected="false">Assessment</button>
     <button role="tab" data-tab="manager" aria-selected="false">Manager</button>
+    <button role="tab" data-tab="quality" aria-selected="false">Quality</button>
   </nav>
   <div class="status" id="status-pills" title="Backends from /healthz"></div>
   <button class="btn-ghost btn-sm" id="trace-toggle" aria-pressed="false" title="Show / hide the orchestration trace panel">⚙ Orchestration ▾</button>
@@ -114,6 +115,17 @@
     <!-- ── Manager ─────────────────────────────────────────────────────── -->
     <section class="view" id="view-manager" role="tabpanel" aria-label="Manager">
       <div id="manager-root"></div>
+    </section>
+
+    <!-- ── Quality (live eval gates) ───────────────────────────────────── -->
+    <section class="view" id="view-quality" role="tabpanel" aria-label="Quality gates">
+      <div class="card">
+        <div class="card-title spread">
+          <span>Quality gates <span class="pill">the CI gate, executed in front of you</span></span>
+          <span class="pill">67 gold cases · deterministic · offline</span>
+        </div>
+        <div id="quality-root"></div>
+      </div>
     </section>
   </main>
 

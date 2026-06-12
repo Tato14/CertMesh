@@ -255,6 +255,11 @@ class FoundryIQ:
     def all_chunk_texts(self) -> list[str]:
         return [c.text for c in self._chunks]
 
+    def chunk(self, chunk_id: str) -> RetrievedChunk | None:
+        """Look up a chunk by its citation id (e.g. ``guide#12``) — used by the
+        dashboard's evidence inspector to show the verbatim source."""
+        return next((c for c in self._chunks if c.id == chunk_id), None)
+
     def known_certifications(self) -> set[str]:
         codes: set[str] = set()
         for c in self._chunks:
