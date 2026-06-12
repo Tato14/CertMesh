@@ -14,7 +14,7 @@ Mapped to the contest requirements and the rubric.
 - [x] **Public GitHub repo** — <https://github.com/Tato14/CertMesh> (secret scan clean; `.env` untracked).
 - [x] **Architecture diagram** — `docs/architecture.md` (Mermaid), a required artifact.
 - [x] **Project description** — `README.md`.
-- [ ] **≤5-min original demo video uploaded to YouTube/Vimeo** — record using `docs/demo-script.md`; add the link to the README.
+- [ ] **≤5-min original demo video uploaded to YouTube/Vimeo** — RECORDED: `docs/video/certmesh-demo.webm` (2:58, captioned narration, real timings; gitignored). Upload it to YouTube and paste the link into the README — or re-record with voiceover by reading the on-screen captions.
 
 ## Highly-valued extras
 - [x] **Evals** — 67 labelled gold cases + scorecard + **6 hard CI gates**, runnable **live in-product** from the Quality tab (`evals/`, `POST /api/evals/run`).
