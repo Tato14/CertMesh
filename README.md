@@ -211,9 +211,3 @@ git grep -nE '(API_KEY|SECRET|PASSWORD)\s*=\s*["'"'"']?[A-Za-z0-9/+]{12,}' -- '*
 See [docs/architecture.md](docs/architecture.md#code-map). Key dirs: `src/certmesh`
 (agents, IQ layers, orchestrator), `app` (dashboard), `evals`, `deploy`, `docs`,
 `data` (synthetic), `tests`.
-
-## Demo video
-▶️ *Add your ≤5-min YouTube/Vimeo link here.* Script: [docs/demo-script.md](docs/demo-script.md).
-
-## License
-MIT — see [LICENSE](LICENSE).
